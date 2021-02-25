@@ -18,9 +18,10 @@ object Lexer {
   def convertToToken(resultBuffer: ListBuffer[Token], sourceCharList: List[Char]): List[Token] = {
     val purifiedSourceCharList = skipWhiteSpace(sourceCharList)
     if (purifiedSourceCharList.isEmpty) return resultBuffer.toList
-    else Matcher(purifiedSourceCharList) match {
-      case
-    }
+//    else Matcher(purifiedSourceCharList) match {
+//      case
+//    }
+    List[Token]()
   }
 
   def apply(sourceCode: String): List[Token] = convertToToken(ListBuffer[Token](), sourceCode.toList)

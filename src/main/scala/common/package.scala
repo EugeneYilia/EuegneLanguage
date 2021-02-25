@@ -6,8 +6,9 @@ package object common {
 
     val STARTER,$ = Value
     val FUNCTIONS,FUNCTION,STATEMENTS,STATEMENT,EXPRESSION,BLOCK = Value
-    val INT_KEYWORD,FUNCTION_KEYWORD = Value
-    val PLUS,ASSIGN,MINUS,MULTI,LE,GE,LT,GT,EQ = Value
+    val INT_KEYWORD,FUNCTION_KEYWORD,IF_KEYWORD,ELIF_KEYWORD,ELSE_KEYWORD,FOR_KEYWORD = Value
+    val PLUS,ASSIGN,MINUS,MULTI,EQUAL,LE,GE,LT,GT = Value
+    val PRINTLN : SyntacticSymbol = Value
     //      ;       ,
     val SEMICOLON,COMMA = Value
     val ID : SyntacticSymbol = Value
