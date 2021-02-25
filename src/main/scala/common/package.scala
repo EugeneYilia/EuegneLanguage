@@ -11,11 +11,11 @@ package object common {
     val PRINTLN : SyntacticSymbol = Value
     //      ;       ,
     val SEMICOLON,COMMA = Value
-    val ID : SyntacticSymbol = Value
+    val ID,INT_CONSTANT,FLOAT_CONSTANT = Value
     //      （          ）               [                  ]               {            }
     val LEFT_PAREN,RIGHT_PAREN,LEFT_SQUARE_BRACKET,RIGHT_SQUARE_BRACKET,LEFT_BRACE,RIGHT_BRACE = Value
 
-    val terminalSymbolSet = Set($,INT_KEYWORD,FUNCTION_KEYWORD,PLUS,ASSIGN,MINUS,MULTI,LE,GE,LT,GT,EQ,SEMICOLON,
+    val terminalSymbolSet = Set($,INT_KEYWORD,FUNCTION_KEYWORD,PLUS,ASSIGN,MINUS,MULTI,LE,GE,LT,GT,EQUAL,SEMICOLON,
       COMMA,ID,LEFT_PAREN,RIGHT_PAREN,LEFT_SQUARE_BRACKET,RIGHT_SQUARE_BRACKET,LEFT_BRACE,RIGHT_BRACE)
     val nonTerminalSymbolSet = Set(STARTER,FUNCTIONS,FUNCTION,STATEMENTS,STATEMENT,EXPRESSION,BLOCK)
 

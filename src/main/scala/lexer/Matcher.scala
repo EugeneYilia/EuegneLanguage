@@ -1,6 +1,6 @@
 package lexer
 
-import common.SyntacticSymbol.{ASSIGN, ELIF_KEYWORD, ELSE_KEYWORD, EQUAL, FOR_KEYWORD, FUNCTION_KEYWORD, GE, GT, IF, INT_KEYWORD, LE, LEFT_PAREN, LT, MINUS, MULTI, PLUS, PRINTLN}
+import common.SyntacticSymbol.{ASSIGN, COMMA, ELIF_KEYWORD, ELSE_KEYWORD, EQUAL, FOR_KEYWORD, FUNCTION_KEYWORD, GE, GT, IF_KEYWORD, INT_KEYWORD, LE, LEFT_BRACE, LEFT_PAREN, LEFT_SQUARE_BRACKET, LT, MINUS, MULTI, PLUS, PRINTLN, RIGHT_BRACE, RIGHT_PAREN, RIGHT_SQUARE_BRACKET, SEMICOLON}
 import common.Token
 
 object Matcher {
@@ -9,7 +9,7 @@ object Matcher {
   def matchKeyword(sourceCharList: List[Char]): MatchResult = sourceCharList match {
     case 'i' :: 'n' :: 't' :: restCharList => Some(((INT_KEYWORD, null), restCharList))
     case 'f' :: 'u' :: 'n' :: 'c' :: restCharList => Some(((FUNCTION_KEYWORD, null), restCharList))
-    case 'i' :: 'f' :: restCharList => Some(((IF, null), restCharList))
+    case 'i' :: 'f' :: restCharList => Some(((IF_KEYWORD, null), restCharList))
     case 'e' :: 'l' :: 'i' :: 'f' :: restCharList => Some(((ELIF_KEYWORD, null), restCharList))
     case 'e' :: 'l' :: 's' :: 'e' :: restCharList => Some(((ELSE_KEYWORD, null), restCharList))
     case 'f' :: 'o' :: 'r' :: restCharList => Some(((FOR_KEYWORD, null), restCharList))
@@ -35,8 +35,15 @@ object Matcher {
   }
   def matchSeparator(sourceCharList:List[Char]):MatchResult = sourceCharList match {
     case '(' :: restCharList => Some(((LEFT_PAREN,null),restCharList))
-    case ')'
+    case ')' :: restCharList => Some(((RIGHT_PAREN,null),restCharList))
+    case '[' :: restCharList => Some(((LEFT_SQUARE_BRACKET,null),restCharList))
+    case ']' :: restCharList => Some(((RIGHT_SQUARE_BRACKET,null),restCharList))
+    case '{' :: restCharList => Some(((LEFT_BRACE,null),restCharList))
+    case '}' :: restCharList => Some(((RIGHT_BRACE,null),restCharList))
+    case ',' :: restCharList => Some(((COMMA,null),restCharList))
+    case ';' :: restCharList => Some(((SEMICOLON,null),restCharList))
   }
+
 
   def apply(sourceCharList: List[Char]): MatchResult = {
     matchKeyword(sourceCharList)
