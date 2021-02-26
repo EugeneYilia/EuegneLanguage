@@ -12,4 +12,6 @@ class LexerTest extends AnyFunSuite {
     println(source.span(_.isWhitespace)._2)
     println(Lexer.skipWhiteSpace(source))
   }
+
+
 }

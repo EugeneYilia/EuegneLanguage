@@ -14,14 +14,14 @@ object Lexer {
   //针对@tailrec注解的使用需要注意
   //@scala.annotation.tailrec，这个符号除了可以标识尾递归外，更重要的是编译器会检查该函数是否真的尾递归，若不是，会导致如下编译错误。
   //could not optimize @tailrec annotated method fibonacci: it contains a recursive call not in tail position
-//  @tailrec
+  @tailrec
   def convertToToken(resultBuffer: ListBuffer[Token], sourceCharList: List[Char]): List[Token] = {
     val purifiedSourceCharList = skipWhiteSpace(sourceCharList)
-    if (purifiedSourceCharList.isEmpty) return resultBuffer.toList
-//    else Matcher(purifiedSourceCharList) match {
-//      case
-//    }
-    List[Token]()
+    if (purifiedSourceCharList.isEmpty) resultBuffer.toList
+    else Matcher(purifiedSourceCharList) match {
+      case Some((token,restCharList)) => convertToToken(resultBuffer.addOne(token),restCharList)
+      case None => throw new RuntimeException(s"Lexer part error: ${purifiedSourceCharList.mkString}")
+    }
   }
 
   def apply(sourceCode: String): List[Token] = convertToToken(ListBuffer[Token](), sourceCode.toList)

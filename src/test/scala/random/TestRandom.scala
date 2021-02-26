@@ -2,6 +2,9 @@ package random
 
 import org.scalatest.funsuite.AnyFunSuite
 
+import scala.:+
+import scala.collection.mutable.ListBuffer
+
 class TestRandom extends AnyFunSuite {
   test("test::") {
     val source = List('1', '2', '3', '4', '5')
@@ -28,5 +31,54 @@ class TestRandom extends AnyFunSuite {
       .orElse(Some(1))
       .orElse(None)
     println(s"result2:$result2")
+  }
+
+  test("test isLetter") {
+    val x = 'ʼ'
+    println(x.isLetter)
+  }
+
+  test("test Match") {
+    val temp = List[Char]('1','2',1,'x')
+    temp.foreach(element=>println(s"$element:${matchDigit(element)}"))
+
+    val temp2 = "121x".toList
+    temp2.foreach(element=>println(s"$element:${matchDigit(element)}"))
+  }
+
+  test("test +:"){
+    println('x' +: List('A','B'))
+//    println('x'  List('A','B'))
+
+  }
+
+  test("tst :+") {
+
+  }
+
+  test("receive tuple")  {
+    val receive1,receive2 = returnTuple
+    println(s"receive1:$receive1")
+    println(s"receive2:$receive2")
+    receive1._1.addOne('X')
+    println(s"receive1:$receive1")
+    println(s"receive2:$receive2")
+
+    val receive3,(receive4,receive5) = returnTuple
+    println(s"receive3:$receive3")
+    println(s"receive4:$receive4")
+    println(s"receive5:$receive5")
+  }
+
+  def returnTuple: (ListBuffer[Char],ListBuffer[Char]) = {
+    (ListBuffer[Char]('A','B'),ListBuffer[Char]('C','D'))
+  }
+
+  def matchIdContent(sourceChar:Char):Boolean = {
+    (sourceChar >= 'A' && sourceChar <= 'Z') || (sourceChar >= 'a' && sourceChar <= 'z') || (sourceChar >= '0' && sourceChar <= '9' )
+  }
+
+  def matchDigit(sourceChar:Char):Boolean = {
+    (sourceChar >= '0' && sourceChar <= '9' )
   }
 }

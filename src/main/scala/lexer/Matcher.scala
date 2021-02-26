@@ -1,6 +1,6 @@
 package lexer
 
-import common.SyntacticSymbol.{ASSIGN, COMMA, ELIF_KEYWORD, ELSE_KEYWORD, EQUAL, FOR_KEYWORD, FUNCTION_KEYWORD, GE, GT, IF_KEYWORD, INT_KEYWORD, LE, LEFT_BRACE, LEFT_PAREN, LEFT_SQUARE_BRACKET, LT, MINUS, MULTI, PLUS, PRINTLN, RIGHT_BRACE, RIGHT_PAREN, RIGHT_SQUARE_BRACKET, SEMICOLON}
+import common.SyntacticSymbol.{ASSIGN, COMMA, ELIF_KEYWORD, ELSE_KEYWORD, EQUAL, FOR_KEYWORD, FUNCTION_KEYWORD, GE, GT, ID, IF_KEYWORD, INT_CONSTANT, INT_KEYWORD, LE, LEFT_BRACE, LEFT_PAREN, LEFT_SQUARE_BRACKET, LT, MINUS, MULTI, PLUS, PRINTLN, RIGHT_BRACE, RIGHT_PAREN, RIGHT_SQUARE_BRACKET, SEMICOLON}
 import common.Token
 
 object Matcher {
@@ -30,28 +30,68 @@ object Matcher {
     case '<' :: '+' :: restCharList => Some(((LE, null), restCharList))
     case '<' :: restCharList => Some(((LT, null), restCharList))
     case '>' :: restCharList => Some(((GT, null), restCharList))
-    case '=' :: '=' :: restCharList => Some(((EQUAL,null),restCharList))
+    case '=' :: '=' :: restCharList => Some(((EQUAL, null), restCharList))
     case _ => None
   }
-  def matchSeparator(sourceCharList:List[Char]):MatchResult = sourceCharList match {
-    case '(' :: restCharList => Some(((LEFT_PAREN,null),restCharList))
-    case ')' :: restCharList => Some(((RIGHT_PAREN,null),restCharList))
-    case '[' :: restCharList => Some(((LEFT_SQUARE_BRACKET,null),restCharList))
-    case ']' :: restCharList => Some(((RIGHT_SQUARE_BRACKET,null),restCharList))
-    case '{' :: restCharList => Some(((LEFT_BRACE,null),restCharList))
-    case '}' :: restCharList => Some(((RIGHT_BRACE,null),restCharList))
-    case ',' :: restCharList => Some(((COMMA,null),restCharList))
-    case ';' :: restCharList => Some(((SEMICOLON,null),restCharList))
+
+  def matchSeparator(sourceCharList: List[Char]): MatchResult = sourceCharList match {
+    case '(' :: restCharList => Some(((LEFT_PAREN, null), restCharList))
+    case ')' :: restCharList => Some(((RIGHT_PAREN, null), restCharList))
+    case '[' :: restCharList => Some(((LEFT_SQUARE_BRACKET, null), restCharList))
+    case ']' :: restCharList => Some(((RIGHT_SQUARE_BRACKET, null), restCharList))
+    case '{' :: restCharList => Some(((LEFT_BRACE, null), restCharList))
+    case '}' :: restCharList => Some(((RIGHT_BRACE, null), restCharList))
+    case ',' :: restCharList => Some(((COMMA, null), restCharList))
+    case ';' :: restCharList => Some(((SEMICOLON, null), restCharList))
+    case _ => None
+  }
+
+  def matchConstant(sourceCharList: List[Char]): MatchResult = {
+    //TODO: 添加Float常量的匹配
+    matchIntegerConstant(sourceCharList)
+    //      .orElse()
+  }
+
+  def matchIntegerConstant(sourceCharList: List[Char]): MatchResult = {
+    val (integerCharList, restCharList) = sourceCharList.span(_.isDigit)
+    integerCharList match {
+      case Nil => None
+      case _ => Some(((INT_CONSTANT, integerCharList.mkString), restCharList))
+    }
+  }
+
+  def matchIdentifier(sourceCharList: List[Char]): MatchResult = {
+    sourceCharList match {
+      case first :: restCharList => {
+        if (matchIdHead(first)) {
+          val (matchPart, leftCharList) = restCharList.span(matchIdContent)
+          matchPart match {
+            case Nil => Some((ID, first.toString), leftCharList)
+            case _ => Some((ID, (first +: matchPart).mkString), leftCharList)
+          }
+        } else {
+          None
+        }
+      }
+      case _ => None
+    }
+  }
+
+  private def matchIdHead(sourceChar: Char): Boolean = {
+    (sourceChar >= 'A' && sourceChar <= 'Z') || (sourceChar >= 'a' && sourceChar <= 'z') || sourceChar == '_'
+  }
+
+  private def matchIdContent(sourceChar: Char): Boolean = {
+    (sourceChar >= 'A' && sourceChar <= 'Z') || (sourceChar >= 'a' && sourceChar <= 'z') || (sourceChar >= '0' && sourceChar <= '9') || sourceChar == '_'
   }
 
 
   def apply(sourceCharList: List[Char]): MatchResult = {
     matchKeyword(sourceCharList)
-      .orElse()
-      .orElse()
-      .orElse()
+      .orElse(matchOperator(sourceCharList))
+      .orElse(matchSeparator(sourceCharList))
+      .orElse(matchConstant(sourceCharList))
+      .orElse(matchIdentifier(sourceCharList))
       .orElse(matchBuiltInFunction(sourceCharList))
   }
-
-
 }

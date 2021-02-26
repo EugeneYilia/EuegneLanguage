@@ -1,4 +1,4 @@
-import common.SyntacticSymbol.SyntacticSymbol
+import common.SyntacticSymbol.{IF_KEYWORD, SyntacticSymbol}
 
 package object common {
   object SyntacticSymbol extends Enumeration {
@@ -6,7 +6,7 @@ package object common {
 
     val STARTER,$ = Value
     val FUNCTIONS,FUNCTION,STATEMENTS,STATEMENT,EXPRESSION,BLOCK = Value
-    val INT_KEYWORD,FUNCTION_KEYWORD,IF_KEYWORD,ELIF_KEYWORD,ELSE_KEYWORD,FOR_KEYWORD = Value
+    val INT_KEYWORD,FUNCTION_KEYWORD,IF_KEYWORD,ELIF_KEYWORD,ELSE_KEYWORD,FOR_KEYWORD,FLOAT_KEYWORD = Value
     val PLUS,ASSIGN,MINUS,MULTI,EQUAL,LE,GE,LT,GT = Value
     val PRINTLN : SyntacticSymbol = Value
     //      ;       ,
