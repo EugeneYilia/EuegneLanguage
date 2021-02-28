@@ -3,7 +3,7 @@ import lexer.Lexer
 import scala.io.Source
 
 object Bootstrap extends App{
-  println(args(0))
+  println(s"filePath: ${args(0)}")
   val file = Source.fromFile(args(0))
   val fileContent = file.mkString
   println(s"fileContent: $fileContent")

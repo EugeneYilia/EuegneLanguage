@@ -2,7 +2,7 @@ package random
 
 import org.scalatest.funsuite.AnyFunSuite
 
-import scala.:+
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 
 class TestRandom extends AnyFunSuite {
@@ -68,6 +68,13 @@ class TestRandom extends AnyFunSuite {
     println(s"receive3:$receive3")
     println(s"receive4:$receive4")
     println(s"receive5:$receive5")
+  }
+
+  test("immutableMap operation") {
+    val immutableMap = mutable.Map[String, String]()
+    println(immutableMap+=("a"->"a"))
+    println(immutableMap+=("a"->"b"))
+    println(immutableMap+=("b"->"c"))
   }
 
   def returnTuple: (ListBuffer[Char],ListBuffer[Char]) = {
