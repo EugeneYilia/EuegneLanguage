@@ -1,3 +1,4 @@
+import common.{Grammar, SyntacticSymbol}
 import lexer.Lexer
 
 import scala.io.Source
@@ -7,7 +8,8 @@ object Bootstrap extends App{
   val file = Source.fromFile(args(0))
   val fileContent = file.mkString
   println(s"fileContent: $fileContent")
-  val tokens = Lexer(fileContent)
+  var tokens = Lexer(fileContent) :+ (SyntacticSymbol.$,null)
   println(s"tokens: ${tokens.mkString}")
-
+  println("Grammars: ")
+  Grammar.derivationList.foreach(println)
 }
