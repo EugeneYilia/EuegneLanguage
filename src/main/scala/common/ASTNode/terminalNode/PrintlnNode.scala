@@ -7,6 +7,7 @@ case class PrintlnNode(value:ExpressionNode) extends ExpressionNode {
     value.exec(env) match {
       // 若有执行结果则打印 否则直接返回None
       case Some(execResult: ExecResult) => println(execResult.result)
+      case None => None
     }
     None
   }

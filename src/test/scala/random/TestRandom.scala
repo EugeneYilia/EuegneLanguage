@@ -14,7 +14,9 @@ class TestRandom extends AnyFunSuite {
         println(b)
         println(c)
       }
+      case _ => {
 
+      }
 
     }
   }
