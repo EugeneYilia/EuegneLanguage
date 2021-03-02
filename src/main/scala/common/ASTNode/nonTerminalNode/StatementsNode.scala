@@ -4,6 +4,10 @@ import common.ASTNode.{Env, ExecResult, Node}
 
 case class StatementsNode(statementList:List[StatementNode]) extends Node {
   override def exec(env: Env): Option[ExecResult] = {
-    statementList.foreach(statementNode => statementNode.exec(env))
+    val lastIndex = statementList.size -1
+    for(index <- 0 until lastIndex){
+      statementList(index).exec(env)
+    }
+    statementList(lastIndex).exec(env)
   }
 }
