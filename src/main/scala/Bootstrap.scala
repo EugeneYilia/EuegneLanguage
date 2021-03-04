@@ -1,5 +1,6 @@
 import common.{Grammar, SyntacticSymbol}
 import lexer.Lexer
+import parser.EugeneParser
 
 import scala.io.Source
 
@@ -12,4 +13,6 @@ object Bootstrap extends App{
   println(s"tokens: ${tokens.mkString}")
   println("Grammars: ")
   Grammar.derivationList.foreach(println)
+
+  EugeneParser(tokens)
 }
