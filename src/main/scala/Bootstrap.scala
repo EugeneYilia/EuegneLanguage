@@ -1,6 +1,6 @@
 import common.{Grammar, SyntacticSymbol}
 import lexer.Lexer
-import parser.EugeneParser
+import parser.eugeneParser.EugeneParser
 
 import scala.io.Source
 
