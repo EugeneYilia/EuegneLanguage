@@ -79,6 +79,12 @@ class TestRandom extends AnyFunSuite {
     println(immutableMap+=("b"->"c"))
   }
 
+  test("zipWithIndex") {
+    val list = List("A","B","C")
+    val newList = list.zipWithIndex
+    println(newList)
+  }
+
   def returnTuple: (ListBuffer[Char],ListBuffer[Char]) = {
     (ListBuffer[Char]('A','B'),ListBuffer[Char]('C','D'))
   }
