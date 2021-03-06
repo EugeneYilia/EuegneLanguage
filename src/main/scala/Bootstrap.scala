@@ -1,4 +1,5 @@
 import common.{Grammar, SyntacticSymbol}
+import core.lr.computeAnalysisTable
 import lexer.Lexer
 import parser.eugeneParser.EugeneParser
 
@@ -14,5 +15,6 @@ object Bootstrap extends App{
   println("Grammars: ")
   Grammar.derivationList.foreach(println)
 
+  computeAnalysisTable(Grammar.derivationList)
   EugeneParser(tokens)
 }
