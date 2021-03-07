@@ -1,6 +1,7 @@
 package common
 
 import common.SyntacticSymbol.{ASSIGN, BLOCK, ELSE_KEYWORD, EXPRESSION, FUNCTION, FUNCTIONS, FUNCTION_KEYWORD, ID, IF_KEYWORD, INT_CONSTANT, LEFT_PAREN, MINUS, MULTI, PLUS, PRINTLN, RIGHT_PAREN, SEMICOLON, STARTER, STATEMENT, STATEMENTS}
+import core.LR
 
 object Grammar {
   val derivationList: DerivationList = List[Derivation](
@@ -27,4 +28,8 @@ object Grammar {
     EXPRESSION -> Vector(ID, ASSIGN, EXPRESSION),
     EXPRESSION -> Vector(IF_KEYWORD, LEFT_PAREN, EXPRESSION, RIGHT_PAREN, BLOCK, ELSE_KEYWORD, BLOCK)
   )
+
+  // 终结符 可由特定的 非终结符 推导出来，默认带上自身
+  // 推导出来指的是在推导式右边的第一个符号，此时其左边的非终结符为该终结符的First文法符号
+  val first: First = LR.computeFirst(derivationList)
 }

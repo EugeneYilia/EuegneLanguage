@@ -1,5 +1,7 @@
 import common.SyntacticSymbol.SyntacticSymbol
 
+import scala.collection.immutable.HashMap
+
 package object common {
   type Token = (SyntacticSymbol, String)
 
@@ -10,5 +12,7 @@ package object common {
   type Derivation = (SyntacticSymbol, Vector[SyntacticSymbol])
   type DerivationList = List[Derivation]
 
+  // HashMap的key可由Value中的Set中的语法符号集中的任一个语法符号推导出来
+  type First = Map[SyntacticSymbol,Set[SyntacticSymbol]]
 
 }
