@@ -31,5 +31,6 @@ object Grammar {
 
   // 终结符 可由特定的 非终结符 推导出来，默认带上自身
   // 推导出来指的是在推导式右边的第一个符号，此时其左边的非终结符为该终结符的First文法符号
-  val first: First = LR.computeFirst(derivationList)
+  val first: First = LR.computeFirst()
+
 }

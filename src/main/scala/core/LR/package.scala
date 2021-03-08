@@ -3,6 +3,7 @@ package core
 import common.SyntacticSymbol.SyntacticSymbol
 import common.{DerivationList, First, Grammar, SyntacticSymbol}
 
+import scala.annotation.tailrec
 import scala.collection.mutable
 
 package object LR {
@@ -11,9 +12,9 @@ package object LR {
 
   }
 
-  def computeFirst(derivationList: DerivationList): First = {
+  def computeFirst(): First = {
     // 终结符号的First集合只由其自身构成
-    val initTerminalFirstMap: mutable.Map[SyntacticSymbol, mutable.Set[SyntacticSymbol]] = computeTerminalSymbolFirst
+    val initTerminalFirstMap: mutable.Map[SyntacticSymbol, mutable.Set[SyntacticSymbol]] = computeTerminalSymbolFirst()
 
     // 添加非终结符号的First集合至FirstMap
     val initNonTerminalFirstMap: mutable.Map[SyntacticSymbol, mutable.Set[SyntacticSymbol]] = computeNonTerminalSymbolFirst()
@@ -25,6 +26,7 @@ package object LR {
       .toMap
   }
 
+  @tailrec
   private def computeAllSymbolFirst(result: mutable.Map[SyntacticSymbol, mutable.Set[SyntacticSymbol]],
                                     intermediateMap: mutable.Map[SyntacticSymbol, mutable.Set[SyntacticSymbol]]
                                    ): mutable.Map[SyntacticSymbol, mutable.Set[SyntacticSymbol]] = {
@@ -32,28 +34,27 @@ package object LR {
     else {
       val (addableMap, newIntermediateMap) = intermediateMap
         .partition { case (first, _) =>
-          result.contains(first) && // 已知其可推导的First集合  存在两种情况1.其为终结符号，任何推导出终结符号的推导可记录到该语法符号的First集合中 2.推导出的非终结符号已经知道其First集合，那么该语法符号也可记录到First集合中
-            intermediateMap.values.forall(!_.contains(first)) // 该被推导出来的元素first不可以再推导出其他元素，确保First Set中每一个语法符号对应的First集合中的元素都是终结符号
+          intermediateMap.values.forall(!_.contains(first)) && // 相当于终结符，不会推导出别的语法符号：该被推导出来的元素first不可以再推导出其他元素，确保First Set中每一个语法符号对应的First集合中的元素都是终结符号
+            result.contains(first) // 该等效终结符号已经有对应的First集合：已知其可推导的First集合  存在两种情况1.其为终结符号，任何推导出终结符号的推导可记录到该语法符号的First集合中 2.推导出的非终结符号已经知道其First集合，那么该语法符号也可记录到First集合中
         }
-      val newResultMap = mutable.Map[SyntacticSymbol, mutable.Set[SyntacticSymbol]]()
+//      val newAddableResultMap = mutable.HashMap[SyntacticSymbol, mutable.Set[SyntacticSymbol]]()
       addableMap
+        .toVector
         .map { case (syntacticSymbol: SyntacticSymbol, syntacticSymbolSet: mutable.Set[SyntacticSymbol]) => (syntacticSymbolSet, syntacticSymbol) }
-        .map { case (first, second) => (first, result(second)) }
+        .map { case (first, second) => (first, result(second)) }// 通过了上面的filter result中必定存在该key因此可以这么写
         .foreach { case (first, second) =>
           first.foreach(key => {
-            val value = newResultMap.get(key)
+            val value = result.get(key)
             value match {
-              case Some(result)=>
-                newResultMap += key -> (second ++ result)
+              case Some(firstResult)=>
+                result += key -> (second ++ firstResult)
               case None =>
-                newResultMap += key -> (mutable.Set.empty ++= second)
+                result += key -> (mutable.Set.empty ++= second)
             }
           })
         }
-
-      newResultMap
+      computeAllSymbolFirst(result, newIntermediateMap)
     }
-    mutable.Map[SyntacticSymbol, mutable.Set[SyntacticSymbol]]()
   }
 
   // (LEFT_BRACE,HashSet(LEFT_BRACE))
