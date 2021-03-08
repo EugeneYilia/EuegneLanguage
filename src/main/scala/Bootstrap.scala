@@ -6,15 +6,31 @@ import parser.eugeneParser.EugeneParser
 import scala.io.Source
 
 object Bootstrap extends App{
-  println(s"filePath: ${args(0)}")
+  println(s"filePath: ")
+  println(args(0))
+  println()
+
   val file = Source.fromFile(args(0))
   val fileContent = file.mkString
-  println(s"fileContent: $fileContent")
+  println(s"fileContent: ")
+  println(fileContent)
+  println()
+
   var tokens = Lexer(fileContent) :+ (SyntacticSymbol.$,null)
-  println(s"tokens: ${tokens.mkString}")
+
+  println(s"tokens: ")
+  println(tokens.mkString)
+  println()
+
   println("Grammars: ")
   Grammar.derivationList.foreach(println)
+  println()
 
+  println("First: ")
+  Grammar.first.foreach(println)
+  println()
+
+  println("Parse: ")
   LR.computeAnalysisTable(Grammar.derivationList)
   EugeneParser(tokens)
 }
