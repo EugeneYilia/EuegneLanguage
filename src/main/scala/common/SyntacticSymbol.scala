@@ -15,6 +15,7 @@ object SyntacticSymbol extends Enumeration {
   //      (            )              [                  ]                    {            }
   val LEFT_PAREN, RIGHT_PAREN, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_BRACE, RIGHT_BRACE = Value
 
+  //TODO: 补全终结符号集合和非终结符号集合
   private val terminalSymbolSet = Set($, INT_KEYWORD, FUNCTION_KEYWORD, PLUS, ASSIGN, MINUS, MULTI, LE, GE, LT, GT, EQUAL, SEMICOLON,
     COMMA, ID, LEFT_PAREN, RIGHT_PAREN, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_BRACE, RIGHT_BRACE)
   private val nonTerminalSymbolSet = Set(STARTER, FUNCTIONS, FUNCTION, STATEMENTS, STATEMENT, EXPRESSION, BLOCK)

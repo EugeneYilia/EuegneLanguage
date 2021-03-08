@@ -85,6 +85,15 @@ class TestRandom extends AnyFunSuite {
     println(newList)
   }
 
+  test("flapMap") {
+    val list = List((1,"A"),(2,"B"),(3,"C"))
+    val newList = list
+      .flatMap(x => x._1.toString)
+
+    println(newList)
+
+  }
+
   def returnTuple: (ListBuffer[Char],ListBuffer[Char]) = {
     (ListBuffer[Char]('A','B'),ListBuffer[Char]('C','D'))
   }
