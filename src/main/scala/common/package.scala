@@ -15,4 +15,10 @@ package object common {
   // HashMap的key可由Value中的Set中的语法符号集中的任一个语法符号推导出来
   type First = Map[SyntacticSymbol,Set[SyntacticSymbol]]
 
+  type State = Int
+
+  type Item = (SyntacticSymbol,Vector[SyntacticSymbol],Vector[SyntacticSymbol],SyntacticSymbol)
+  type Closure = Set[Item]
+  type ItemSet = Set[Item]
+
 }
