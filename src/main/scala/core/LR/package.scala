@@ -1,7 +1,7 @@
 package core
 
 import common.SyntacticSymbol.SyntacticSymbol
-import common.{DerivationList, First, Grammar, SyntacticSymbol}
+import common.{DerivationList, First, Grammar, Item, ItemSet, SyntacticSymbol}
 
 import scala.annotation.tailrec
 import scala.collection.mutable
@@ -10,6 +10,18 @@ package object LR {
   def computeAnalysisTable(derivationList: DerivationList): Unit = {
     //    val derivationMap = derivationList.zipWithIndex.toMap
 
+  }
+
+  def computeItems():ItemSet = {
+    val firstItemSet = mutable.Set((SyntacticSymbol.STARTER,Vector(),Vector(SyntacticSymbol.FUNCTIONS),SyntacticSymbol.$))
+    val resultItemSet = mutable.Set()
+    computeAllItems().toSet
+  }
+
+  @tailrec
+  private def computeAllItems():mutable.Set[Item] = {
+    mutable.Set[Item]()
+    computeAllItems()
   }
 
   def computeFirst(): First = {
