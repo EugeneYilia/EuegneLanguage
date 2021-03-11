@@ -1,4 +1,4 @@
-import common.{Grammar, SyntacticSymbol}
+import common.{Grammar, Item, SyntacticSymbol}
 import core.LR
 import lexer.Lexer
 import parser.eugeneParser.EugeneParser
@@ -29,6 +29,10 @@ object Bootstrap extends App{
   println("First: ")
   Grammar.first.foreach(println)
   println()
+
+  println("Original Closure: ")
+  val originalItem : Item = (SyntacticSymbol.STARTER, Vector(), Vector(SyntacticSymbol.FUNCTIONS), SyntacticSymbol.$)
+  LR.computeClosure(originalItem).foreach(println)
 
   println("Parse: ")
   LR.computeAnalysisTable(Grammar.derivationList)

@@ -4,13 +4,13 @@ import common.{Closure, Grammar, Item, ItemSet}
 import common.SyntacticSymbol.{SyntacticSymbol, isNonTerminalSymbol, isTerminalSymbol}
 
 object ClosureUtil {
-  //                                                                  NonTerminalSymbol
+  //                                                           NonTerminalSymbol
   //                       STARTER        IntermediateVec       DerivationFirst       DerivationLeft       TerminalSymbol
   type MatchResult = (SyntacticSymbol, Vector[SyntacticSymbol], SyntacticSymbol, Vector[SyntacticSymbol], SyntacticSymbol)
 
-  def computeOriginalItemSet(): ItemSet = {
-
-  }
+//  def computeOriginalItemSet(): ItemSet = {
+//
+//  }
 
   def resolve(item: Item): Option[MatchResult] = item match {
     // 当Derivation不止有一个元素的时候会进入到第一个Case
