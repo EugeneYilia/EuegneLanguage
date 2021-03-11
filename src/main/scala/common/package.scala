@@ -1,6 +1,6 @@
 import common.SyntacticSymbol.SyntacticSymbol
 
-import scala.collection.immutable.HashMap
+import scala.collection.mutable
 
 package object common {
   type Token = (SyntacticSymbol, String)
@@ -18,7 +18,9 @@ package object common {
   type State = Int
 
   type Item = (SyntacticSymbol,Vector[SyntacticSymbol],Vector[SyntacticSymbol],SyntacticSymbol)
+  // 中间过程项目集合
+  type ItemSet = mutable.Set[Item]
+  // 最终生成的项目集合闭包
   type Closure = Set[Item]
-  type ItemSet = Set[Item]
 
 }

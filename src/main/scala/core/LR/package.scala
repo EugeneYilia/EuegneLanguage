@@ -1,7 +1,7 @@
 package core
 
 import common.SyntacticSymbol.SyntacticSymbol
-import common.{DerivationList, First, Grammar, Item, ItemSet, SyntacticSymbol}
+import common.{Closure, DerivationList, First, Grammar, Item, ItemSet, SyntacticSymbol}
 
 import scala.annotation.tailrec
 import scala.collection.mutable
@@ -12,16 +12,19 @@ package object LR {
 
   }
 
-  def computeItems():ItemSet = {
-    val firstItemSet = mutable.Set((SyntacticSymbol.STARTER,Vector(),Vector(SyntacticSymbol.FUNCTIONS),SyntacticSymbol.$))
-    val resultItemSet = mutable.Set()
-    computeAllItems().toSet
+  def computeClosure():Closure = {
+    val originalItemSet = mutable.Set[Item]((SyntacticSymbol.STARTER,Vector(),Vector(SyntacticSymbol.FUNCTIONS),SyntacticSymbol.$))
+    val resultItemSet = mutable.Set[Item]()
+    computeAllItems(originalItemSet,resultItemSet).toSet
   }
 
   @tailrec
-  private def computeAllItems():mutable.Set[Item] = {
-    mutable.Set[Item]()
-    computeAllItems()
+  private def computeAllItems(intermediateSet:ItemSet,resultSet:ItemSet):ItemSet = {
+    if (intermediateSet.isEmpty) resultSet
+    else {
+      mutable.Set[Item]()
+      computeAllItems()
+    }
   }
 
   def computeFirst(): First = {
