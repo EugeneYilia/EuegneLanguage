@@ -19,8 +19,8 @@ object ClosureUtil {
     case _ => None
   }
 
-  def computeFirstSet(derivationLeft:Vector[SyntacticSymbol]):Option[Set[SyntacticSymbol]] = {
-    if(derivationLeft.isEmpty) None
+  def computeFirstSet(derivationLeft: Vector[SyntacticSymbol]): Option[Set[SyntacticSymbol]] = {
+    if (derivationLeft.isEmpty) None
     else Some(Grammar.first(derivationLeft.head))
   }
 
@@ -28,17 +28,17 @@ object ClosureUtil {
   def originalStep(item: Item): Closure = {
     resolve(item) match {
       case Some(matchResult: MatchResult) =>
-        val derivationFirst = matchResult._3 // 此为非终结符
-        val derivationLeft = matchResult._4
-        val terminalSymbol = matchResult._5
-        val derivationFirstProductions = Grammar.derivationList.withFilter(_._1 == derivationFirst).map(_._2)
+        val derivationFirst: SyntacticSymbol = matchResult._3 // 此为非终结符
+        val derivationLeft: Vector[SyntacticSymbol] = matchResult._4
+        val terminalSymbol: SyntacticSymbol = matchResult._5
+        val derivationFirstProductions: List[Vector[SyntacticSymbol]] = Grammar.derivationList.withFilter(_._1 == derivationFirst).map(_._2)
         (for {
-          derivationFirstProduction <- derivationFirstProductions
-          derivationLeftFirstTerminalSymbol <- computeFirstSet(derivationLeft) match {
+          derivationFirstProduction: Vector[SyntacticSymbol] <- derivationFirstProductions
+          derivationLeftFirstTerminalSymbol: SyntacticSymbol <- computeFirstSet(derivationLeft) match {
             case Some(firstSet) => firstSet
             case None => Set(terminalSymbol)
           }
-        } yield (derivationFirst,Vector(),derivationFirstProduction,derivationLeftFirstTerminalSymbol)).toSet
+        } yield (derivationFirst, Vector(), derivationFirstProduction, derivationLeftFirstTerminalSymbol)).toSet
       case None => Set()
     }
   }

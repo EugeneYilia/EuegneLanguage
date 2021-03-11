@@ -33,6 +33,7 @@ object Bootstrap extends App{
   println("Original Closure: ")
   val originalItem : Item = (SyntacticSymbol.STARTER, Vector(), Vector(SyntacticSymbol.FUNCTIONS), SyntacticSymbol.$)
   LR.computeClosure(originalItem).foreach(println)
+  println()
 
   println("Parse: ")
   LR.computeAnalysisTable(Grammar.derivationList)
