@@ -25,7 +25,7 @@ package object LR {
     if (intermediateSet.isEmpty) resultSet
     else {
       val newResultSet = resultSet ++ intermediateSet
-      val newIntermediateSet = intermediateSet.flatMap(ClosureUtil.originalStep).diff(newResultSet)
+      val newIntermediateSet = intermediateSet.flatMap(ClosureUtil. originalStep).diff(newResultSet)
       computeAllItems(newIntermediateSet, newResultSet)
     }
   }
