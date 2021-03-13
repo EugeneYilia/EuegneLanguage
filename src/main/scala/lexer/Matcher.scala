@@ -8,7 +8,7 @@ object Matcher {
 
   def matchKeyword(sourceCharList: List[Char]): MatchResult = sourceCharList match {
     case 'i' :: 'n' :: 't' :: restCharList => Some(((INT_KEYWORD, null), restCharList))
-    case 'f' :: 'u' :: 'n' :: 'c' :: restCharList => Some(((FUNCTION_KEYWORD, null), restCharList))
+    case 'f' :: 'n' :: restCharList => Some(((FUNCTION_KEYWORD, null), restCharList))
     case 'i' :: 'f' :: restCharList => Some(((IF_KEYWORD, null), restCharList))
     case 'e' :: 'l' :: 'i' :: 'f' :: restCharList => Some(((ELIF_KEYWORD, null), restCharList))
     case 'e' :: 'l' :: 's' :: 'e' :: restCharList => Some(((ELSE_KEYWORD, null), restCharList))

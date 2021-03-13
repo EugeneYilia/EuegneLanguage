@@ -1,5 +1,5 @@
-func main() {
-    println(123);
+fn main() {
+   println(123);
     a = 2 + 2;
     println(a);
 }

@@ -14,20 +14,42 @@ package object LR {
 
   }
 
+  def computeItems(derivationList: DerivationList): Set[Closure] = {
+    def computeAllItems(intermediateSet:Set[Closure],resultSet:Set[Closure]):Set[Closure] = {
+      if(intermediateSet.isEmpty) resultSet
+      else {
+        computeAllItems()
+      }
+    }
+  }
+
   def computeClosure(item:Item): Closure = {
+
+    // If Input -> (Starter, Vector(), Vector(Functions), $)
+    // 1. (Functions, Vector(), Vector(Functions, Function), $)
+    //    (Functions, Vector(), Vector(Function), $)
+    // 2. (Functions, Vector(), Vector(Functions, Function), Function_Keyword)
+    //    (Functions, Vector(), Vector(Function), Function_Keyword)
+    //    (Function, Vector(), Vector(Function_keyword,id, l_paren, r_paren, block), $)
+    // 3. (Function, Vector(), Vector(Function_keyword,id, l_paren, r_paren, block), Function_keyword)
+    @tailrec
+    def computeAllItems(intermediateSet: ItemSet, resultSet: ItemSet): ItemSet = {
+      if (intermediateSet.isEmpty) resultSet
+      else {
+        val newResultSet = resultSet ++ intermediateSet
+        val newIntermediateSet = intermediateSet.flatMap(ClosureUtil.singleStep).diff(newResultSet)
+        computeAllItems(newIntermediateSet, newResultSet)
+      }
+    }
+
     val originalItemSet = mutable.Set[Item](item)
     val resultItemSet = mutable.Set[Item]()
     computeAllItems(originalItemSet, resultItemSet).toSet
   }
 
-  @tailrec
-  private def computeAllItems(intermediateSet: ItemSet, resultSet: ItemSet): ItemSet = {
-    if (intermediateSet.isEmpty) resultSet
-    else {
-      val newResultSet = resultSet ++ intermediateSet
-      val newIntermediateSet = intermediateSet.flatMap(ClosureUtil.originalStep).diff(newResultSet)
-      computeAllItems(newIntermediateSet, newResultSet)
-    }
+  def computeFirstSet(derivationLeft: Vector[SyntacticSymbol]): Option[Set[SyntacticSymbol]] = {
+    if (derivationLeft.isEmpty) None
+    else Some(Grammar.first(derivationLeft.head))
   }
 
   def computeFirst(): First = {
