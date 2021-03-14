@@ -1,6 +1,6 @@
 package core
 
-import common.SyntacticSymbol.SyntacticSymbol
+import common.SyntacticSymbol.{INT_KEYWORD, SyntacticSymbol}
 import common.{Closure, DerivationList, First, Grammar, Item, ItemSet, SyntacticSymbol}
 import utils.ClosureUtil
 
@@ -14,16 +14,30 @@ package object LR {
 
   }
 
-  def computeItems(derivationList: DerivationList): Set[Closure] = {
-    def computeAllItems(intermediateSet:Set[Closure],resultSet:Set[Closure]):Set[Closure] = {
-      if(intermediateSet.isEmpty) resultSet
-      else {
-        computeAllItems()
-      }
-    }
+  def goto(itemSet: ItemSet, syntacticSymbol: SyntacticSymbol): ItemSet = {
+    //TODO: finish it
+    mutable.Set[Item]()
   }
 
-  def computeClosure(item:Item): Closure = {
+  // 根据项目的产生式计算出所有的项目闭包
+  def computeItems(derivationList: DerivationList): Set[Closure] = {
+    @tailrec
+    def computeAllItems(intermediateSet: Set[Closure], resultSet: mutable.Set[Closure]): mutable.Set[Closure] = {
+      if (intermediateSet.isEmpty) resultSet
+      else {
+        val newResult = resultSet ++ intermediateSet
+
+        //TODO: finish it
+        computeAllItems(Set[Closure](),mutable.Set[Closure]())
+      }
+    }
+
+    val starterItem: Item = (SyntacticSymbol.STARTER, Vector(), Vector(SyntacticSymbol.FUNCTIONS), SyntacticSymbol.$)
+    val startClosure = Set(computeClosure(starterItem))
+    computeAllItems(startClosure, mutable.Set()).toSet
+  }
+
+  def computeClosure(item: Item): Closure = {
 
     // If Input -> (Starter, Vector(), Vector(Functions), $)
     // 1. (Functions, Vector(), Vector(Functions, Function), $)
