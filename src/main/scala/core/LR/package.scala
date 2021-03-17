@@ -20,6 +20,8 @@ package object LR {
 
   // 根据项目的产生式计算出所有的项目闭包
   def computeItems(): Set[Closure] = {
+
+    // Bug 所在处
     @tailrec
     def computeAllItems(intermediateSet: Set[Closure], resultSet: mutable.Set[Closure]): mutable.Set[Closure] = {
       if (intermediateSet.isEmpty) resultSet
@@ -32,9 +34,13 @@ package object LR {
       }
     }
 
-    val starterItem: Item = (SyntacticSymbol.STARTER, Vector(), Vector(SyntacticSymbol.FUNCTIONS), SyntacticSymbol.$)
+    //    val starterItem: Item = (SyntacticSymbol.STARTER, Vector(), Vector(SyntacticSymbol.FUNCTIONS), SyntacticSymbol.$)
+    val starterItem: Item = (SyntacticSymbol.STARTER, Vector(), Grammar.getUsedDerivationList.filter(_._1 == SyntacticSymbol.STARTER).map(_._2).head, SyntacticSymbol.$)
     val startClosure = Set(computeClosure(starterItem))
-    computeAllItems(startClosure, mutable.Set()).toSet
+    val finalResult = computeAllItems(startClosure, mutable.Set())
+    finalResult
+      .map(_.toSet)
+      .toSet
   }
 
   def computeClosure(item: Item): Closure = {
