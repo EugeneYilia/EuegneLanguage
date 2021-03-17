@@ -1,6 +1,7 @@
 import common.SyntacticSymbol.SyntacticSymbol
 
 import scala.collection.mutable
+import parser.lrParser.Action
 
 package object common {
   type Token = (SyntacticSymbol, String)
@@ -13,14 +14,16 @@ package object common {
   type DerivationList = List[Derivation]
 
   // HashMap的key可由Value中的Set中的语法符号集中的任一个语法符号推导出来
-  type First = Map[SyntacticSymbol,Set[SyntacticSymbol]]
+  type First = Map[SyntacticSymbol, Set[SyntacticSymbol]]
 
   type State = Int
 
-  type Item = (SyntacticSymbol,Vector[SyntacticSymbol],Vector[SyntacticSymbol],SyntacticSymbol)
+  type Item = (SyntacticSymbol, Vector[SyntacticSymbol], Vector[SyntacticSymbol], SyntacticSymbol)
   // 中间过程项目集合
   type ItemSet = mutable.Set[Item]
   // 最终生成的项目集合闭包
   type Closure = Set[Item]
 
+  //                         actionMap                                 gotoMap
+  type Table = (Map[(State, SyntacticSymbol), Action], Map[(State, SyntacticSymbol), State])
 }

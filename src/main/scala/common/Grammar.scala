@@ -31,7 +31,17 @@ object Grammar {
 
   // 终结符 可由特定的 非终结符 推导出来，默认带上自身
   // 推导出来指的是在推导式右边的第一个符号，此时其左边的非终结符为该终结符的First文法符号
-  val first: First = LR.computeFirst()
+  var first: () => First = () => LR.computeFirst()
 
-//  var closure: Closure = LR.computeClosure()
+  private var usedDerivationList: List[Derivation] = Grammar.derivationList
+
+  def getUsedDerivationList: List[Derivation] = {
+    usedDerivationList
+  }
+
+  def setUsedDerivationList(usedDerivationList: List[Derivation]): Unit = {
+    this.usedDerivationList = usedDerivationList
+  }
+
+  //  var closure: Closure = LR.computeClosure()
 }

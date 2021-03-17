@@ -15,10 +15,17 @@ object SyntacticSymbol extends Enumeration {
   //      (            )              [                  ]                    {            }
   val LEFT_PAREN, RIGHT_PAREN, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_BRACE, RIGHT_BRACE = Value
 
+  val S, A, B, C, D, E, F, M, N, T = Value
+  val a, b, c, d, e = Value
+
   private val terminalSymbolSet = Set($, INT_KEYWORD, FUNCTION_KEYWORD, IF_KEYWORD, ELIF_KEYWORD, ELSE_KEYWORD, FOR_KEYWORD, FLOAT_KEYWORD,
     PLUS, ASSIGN, MINUS, MULTI, LE, GE, LT, GT, EQUAL, PRINTLN, INT_CONSTANT, FLOAT_CONSTANT, BOOLEAN_CONSTANT, SEMICOLON,
-    COMMA, ID, LEFT_PAREN, RIGHT_PAREN, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_BRACE, RIGHT_BRACE)
-  private val nonTerminalSymbolSet = Set(STARTER, FUNCTIONS, FUNCTION, STATEMENTS, STATEMENT, EXPRESSION, BLOCK)
+    COMMA, ID, LEFT_PAREN, RIGHT_PAREN, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_BRACE, RIGHT_BRACE,
+    a, b, c, d, e
+  )
+  private val nonTerminalSymbolSet = Set(STARTER, FUNCTIONS, FUNCTION, STATEMENTS, STATEMENT, EXPRESSION, BLOCK,
+    S, A, B, C, D, E, F, M, N, T
+  )
 
   def isTerminalSymbol(syntacticSymbol: SyntacticSymbol): Boolean = terminalSymbolSet.contains(syntacticSymbol)
 

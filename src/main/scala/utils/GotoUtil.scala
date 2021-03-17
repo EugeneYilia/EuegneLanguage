@@ -11,8 +11,9 @@ object GotoUtil {
       case _ => None
     }
 
-    val result = closure.flatMap(resolve).flatMap(LR.computeClosure)
-    result
+    closure
+      .flatMap(resolve)
+      .flatMap(LR.computeClosure)
   }
 
   def goto(closure: Closure): Closure = {
@@ -20,9 +21,10 @@ object GotoUtil {
       case (starter, usedVector, derivationFirst +: derivationLeft, terminal) => Some((starter, usedVector :+ derivationFirst, derivationLeft, terminal))
       case _ => None
     }
-//              由移位后的Item构成的ItemSet
-    val result = closure.flatMap(resolve).flatMap(LR.computeClosure)
-    result
+
+    closure
+      .flatMap(resolve)// 由移位后的Item构成的ItemSet
+      .flatMap(LR.computeClosure)// 由其中的每一项构成的closure形成的Set[Closure]，进行flatten后构成Set[Item] 即为最后的Closure结果
   }
 
 

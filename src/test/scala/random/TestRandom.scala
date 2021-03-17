@@ -1,7 +1,8 @@
 package random
 
-import common.{Item, SyntacticSymbol}
-import common.SyntacticSymbol.SyntacticSymbol
+import common.{Grammar, Item, SyntacticSymbol}
+import common.SyntacticSymbol._
+import core.LR
 import org.scalatest.funsuite.AnyFunSuite
 
 import scala.collection.mutable
@@ -104,6 +105,38 @@ class TestRandom extends AnyFunSuite {
     }
   }
 
+  // TODO: fix compute all items bug
+  test("computeAllItems") {
+    val productionSet = List(
+      STARTER -> Vector(EXPRESSION),
+      EXPRESSION -> Vector(C, C),
+      C -> Vector(c, C),
+      C -> Vector(d)
+    )
+    Grammar.setUsedDerivationList(productionSet)
+    val result = LR.computeItems()
+    val expected = Set(
+      Set((C, Vector(), Vector(d), d), (C, Vector(), Vector(d), c), (EXPRESSION, Vector(), Vector(C, C), $), (C, Vector(), Vector(c, C), d), (C, Vector(), Vector(c, C), c), (STARTER, Vector(), Vector(EXPRESSION), $)), // 0
+      Set((STARTER, Vector(EXPRESSION), Vector(), $)), // 1
+      Set((EXPRESSION, Vector(C), Vector(C), $), (C, Vector(), Vector(c, C), $), (C, Vector(), Vector(d), $)), // 2
+      Set((C, Vector(), Vector(d), d), (C, Vector(), Vector(d), c), (C, Vector(), Vector(c, C), d), (C, Vector(), Vector(c, C), c), (C, Vector(c), Vector(C), c), (C, Vector(c), Vector(C), d)), // 3
+      Set((C, Vector(d), Vector(), d), (C, Vector(d), Vector(), c)), // 4
+      Set((EXPRESSION, Vector(C, C), Vector(), $)), // 5
+      Set((C, Vector(c), Vector(C), $), (C, Vector(), Vector(c, C), $), (C, Vector(), Vector(d), $)), // 6
+      Set((C, Vector(d), Vector(), $)), // 7
+      Set((C, Vector(c, C), Vector(), d), (C, Vector(c, C), Vector(), c)), // 8
+      Set((C, Vector(c, C), Vector(), $)) // 9
+    )
+
+    println("result: ")
+    println(result)
+    println
+    println("expected: ")
+    println(expected)
+    println
+    assertResult(expected)(result)
+  }
+
   def returnTuple: (ListBuffer[Char], ListBuffer[Char]) = {
     (ListBuffer[Char]('A', 'B'), ListBuffer[Char]('C', 'D'))
   }
@@ -115,4 +148,6 @@ class TestRandom extends AnyFunSuite {
   def matchDigit(sourceChar: Char): Boolean = {
     (sourceChar >= '0' && sourceChar <= '9')
   }
+
+
 }

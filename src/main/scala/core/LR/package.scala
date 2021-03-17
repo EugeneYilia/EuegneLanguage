@@ -1,7 +1,7 @@
 package core
 
 import common.SyntacticSymbol.{INT_KEYWORD, SyntacticSymbol}
-import common.{Closure, DerivationList, First, Grammar, Item, ItemSet, SyntacticSymbol}
+import common.{Closure, Derivation, DerivationList, First, Grammar, Item, ItemSet, SyntacticSymbol}
 import utils.{ClosureUtil, GotoUtil}
 
 import scala.annotation.tailrec
@@ -9,23 +9,26 @@ import scala.collection.mutable
 
 
 package object LR {
-  def computeAnalysisTable(derivationList: DerivationList): Unit = {
+  def computeAnalysisTable(): Unit = {
     //    val derivationMap = derivationList.zipWithIndex.toMap
+    val closureVector = computeItems().toVector
+    println("closureVector: ")
+    closureVector.foreach(println)
+    println()
   }
 
 
   // 根据项目的产生式计算出所有的项目闭包
-  def computeItems(derivationList: DerivationList): Set[Closure] = {
+  def computeItems(): Set[Closure] = {
     @tailrec
     def computeAllItems(intermediateSet: Set[Closure], resultSet: mutable.Set[Closure]): mutable.Set[Closure] = {
       if (intermediateSet.isEmpty) resultSet
       else {
         val newResult = resultSet ++ intermediateSet
-        val newIntermediateSet = intermediateSet
+        val newIntermediateSetTemp = intermediateSet
           .map(GotoUtil.goto)
-
-        //TODO: finish it
-        computeAllItems(Set[Closure](),mutable.Set[Closure]())
+        val newIntermediateSet = newIntermediateSetTemp.diff(newResult)
+        computeAllItems(newIntermediateSet, newResult)
       }
     }
 
@@ -44,11 +47,11 @@ package object LR {
     //    (Function, Vector(), Vector(Function_keyword,id, l_paren, r_paren, block), $)
     // 3. (Function, Vector(), Vector(Function_keyword,id, l_paren, r_paren, block), Function_keyword)
     @tailrec
-    def computeAllItems(intermediateSet: ItemSet, resultSet: ItemSet): ItemSet = {
+    def computeAllItems(intermediateSet: ItemSet, resultSet: ItemSet, derivationList: List[Derivation] = Grammar.getUsedDerivationList): ItemSet = {
       if (intermediateSet.isEmpty) resultSet
       else {
         val newResultSet = resultSet ++ intermediateSet
-        val newIntermediateSet = intermediateSet.flatMap(ClosureUtil.singleStep).diff(newResultSet)
+        val newIntermediateSet = intermediateSet.flatMap(ClosureUtil.singleStep(_, derivationList)).diff(newResultSet)
         computeAllItems(newIntermediateSet, newResultSet)
       }
     }
@@ -60,10 +63,10 @@ package object LR {
 
   def computeFirstSet(derivationLeft: Vector[SyntacticSymbol]): Option[Set[SyntacticSymbol]] = {
     if (derivationLeft.isEmpty) None
-    else Some(Grammar.first(derivationLeft.head))
+    else Some(Grammar.first()(derivationLeft.head))
   }
 
-  def computeFirst(): First = {
+  def computeFirst(derivationList: List[Derivation] = Grammar.getUsedDerivationList): First = {
 
     // (LEFT_BRACE,HashSet(LEFT_BRACE))
     def computeTerminalSymbolFirst(): mutable.Map[SyntacticSymbol, mutable.Set[SyntacticSymbol]] = {
@@ -76,7 +79,7 @@ package object LR {
     }
 
     def computeNonTerminalSymbolFirst(): mutable.Map[SyntacticSymbol, mutable.Set[SyntacticSymbol]] = {
-      val firstImmutableMap = Grammar.derivationList
+      val firstImmutableMap = derivationList
         .map { case (nonTerminalSymbol: SyntacticSymbol, symbolVector: Vector[SyntacticSymbol]) =>
           (symbolVector.head, nonTerminalSymbol)
         }

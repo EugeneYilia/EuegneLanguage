@@ -5,7 +5,8 @@ import parser.eugeneParser.EugeneParser
 
 import scala.io.Source
 
-object Bootstrap extends App{
+object Bootstrap extends App {
+
   println(s"filePath: ")
   println(args(0))
   println()
@@ -16,26 +17,26 @@ object Bootstrap extends App{
   println(fileContent)
   println()
 
-  var tokens = Lexer(fileContent) :+ (SyntacticSymbol.$,null)
+  var tokens = Lexer(fileContent) :+ (SyntacticSymbol.$, null)
 
   println(s"tokens: ")
   println(tokens.mkString)
   println()
 
   println("Grammars: ")
-  Grammar.derivationList.foreach(println)
+  Grammar.getUsedDerivationList.foreach(println)
   println()
 
   println("First: ")
-  Grammar.first.foreach(println)
+  Grammar.first().foreach(println)
   println()
 
   println("Original Closure: ")
-  val originalItem : Item = (SyntacticSymbol.STARTER, Vector(), Vector(SyntacticSymbol.FUNCTIONS), SyntacticSymbol.$)
+  val originalItem: Item = (SyntacticSymbol.STARTER, Vector(), Vector(SyntacticSymbol.FUNCTIONS), SyntacticSymbol.$)
   LR.computeClosure(originalItem).foreach(println)
   println()
 
   println("Parse: ")
-  LR.computeAnalysisTable(Grammar.derivationList)
-  EugeneParser(tokens)
+  LR.computeAnalysisTable()
+
 }
