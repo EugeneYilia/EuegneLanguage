@@ -27,9 +27,24 @@ package object LR {
       if (intermediateSet.isEmpty) resultSet
       else {
         val newResult = resultSet ++ intermediateSet
-        val newIntermediateSetTemp = intermediateSet
-          .map(GotoUtil.goto)
-          .filter(_.nonEmpty)
+        val newIntermediateSetTemp = for {
+          closure:Closure <- intermediateSet
+          syntacticSymbol:SyntacticSymbol <- SyntacticSymbol.values
+          newClosure = GotoUtil.goto(closure, syntacticSymbol)
+          if newClosure.nonEmpty
+        } yield newClosure
+
+        val next_workbench_mid = for {
+          iI <- intermediateSet
+          xX <- SyntacticSymbol.values
+          g = xX
+          w = iI
+          if g == 'y'
+        } yield g
+
+        //        val newIntermediateSetTemp = intermediateSet
+        //          .map(GotoUtil.goto)
+        //          .filter(_.nonEmpty)
         val newIntermediateSet = newIntermediateSetTemp.diff(newResult)
         computeAllItems(newIntermediateSet, newResult)
       }
