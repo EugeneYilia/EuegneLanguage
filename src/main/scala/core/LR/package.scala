@@ -23,12 +23,13 @@ package object LR {
 
     // Bug 所在处
     @tailrec
-    def computeAllItems(intermediateSet: Set[Closure], resultSet: mutable.Set[Closure]): mutable.Set[Closure] = {
+    def computeAllItems(intermediateSet: mutable.Set[Closure], resultSet: mutable.Set[Closure]): mutable.Set[Closure] = {
       if (intermediateSet.isEmpty) resultSet
       else {
         val newResult = resultSet ++ intermediateSet
         val newIntermediateSetTemp = intermediateSet
           .map(GotoUtil.goto)
+          .filter(_.nonEmpty)
         val newIntermediateSet = newIntermediateSetTemp.diff(newResult)
         computeAllItems(newIntermediateSet, newResult)
       }
@@ -36,7 +37,7 @@ package object LR {
 
     //    val starterItem: Item = (SyntacticSymbol.STARTER, Vector(), Vector(SyntacticSymbol.FUNCTIONS), SyntacticSymbol.$)
     val starterItem: Item = (SyntacticSymbol.STARTER, Vector(), Grammar.getUsedDerivationList.filter(_._1 == SyntacticSymbol.STARTER).map(_._2).head, SyntacticSymbol.$)
-    val startClosure = Set(computeClosure(starterItem))
+    val startClosure = mutable.Set(computeClosure(starterItem))
     val finalResult = computeAllItems(startClosure, mutable.Set())
     finalResult
       .map(_.toSet)
