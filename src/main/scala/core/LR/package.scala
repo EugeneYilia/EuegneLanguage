@@ -1,7 +1,7 @@
 package core
 
-import common.SyntacticSymbol.{INT_KEYWORD, SyntacticSymbol}
-import common.{Closure, Derivation, DerivationList, First, Grammar, Item, ItemSet, SyntacticSymbol}
+import common.SyntacticSymbol.SyntacticSymbol
+import common._
 import utils.{ClosureUtil, GotoUtil}
 
 import scala.annotation.tailrec

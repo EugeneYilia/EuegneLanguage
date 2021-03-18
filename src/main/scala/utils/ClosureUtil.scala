@@ -1,7 +1,7 @@
 package utils
 
-import common.{Closure, Derivation, Grammar, Item, ItemSet}
 import common.SyntacticSymbol.{SyntacticSymbol, isNonTerminalSymbol, isTerminalSymbol}
+import common.{Closure, Derivation, Grammar, Item}
 import core.LR
 
 object ClosureUtil {
