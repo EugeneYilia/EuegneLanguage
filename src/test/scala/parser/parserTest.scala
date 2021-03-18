@@ -8,7 +8,7 @@ import org.scalatest.funsuite.AnyFunSuite
 import scala.collection.immutable
 import scala.collection.immutable.HashSet
 
-class parserTest extends AnyFunSuite{
+class parserTest extends AnyFunSuite {
   test("compute first") {
     val production__set = List(
       E -> Vector(T),
@@ -28,9 +28,9 @@ class parserTest extends AnyFunSuite{
       C -> Vector(d)
     )
     Grammar.setUsedDerivationList(productionSet)
-    val result = HashSet((LR.computeItems().toVector):_*)
+    val result = HashSet((LR.computeItems().toVector): _*)
 
-    val expected:immutable.Set[Closure] = immutable.Set(
+    val expected: immutable.Set[Closure] = immutable.Set(
       HashSet((C, Vector(), Vector(d), d), (C, Vector(), Vector(d), c), (EXPRESSION, Vector(), Vector(C, C), $), (C, Vector(), Vector(c, C), d), (C, Vector(), Vector(c, C), c), (STARTER, Vector(), Vector(EXPRESSION), $)), // 0
       HashSet((STARTER, Vector(EXPRESSION), Vector(), $)), // 1
       HashSet((EXPRESSION, Vector(C), Vector(C), $), (C, Vector(), Vector(c, C), $), (C, Vector(), Vector(d), $)), // 2
@@ -52,5 +52,10 @@ class parserTest extends AnyFunSuite{
     //    println(result.diff(expected))
     //    println(expected.diff(result))
     assertResult(expected)(result)
+  }
+
+  test("computeClosure (STARTER,Vector(FUNCTIONS), Vector(),$)") {
+    val testItem = (STARTER, Vector(FUNCTIONS), Vector(), $)
+    println(LR.computeClosure(testItem))
   }
 }
