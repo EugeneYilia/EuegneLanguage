@@ -9,7 +9,7 @@ import scala.collection.mutable
 
 
 package object LR {
-  //TODO: 1.思考文法关于Statements的构造 2.完成分析表的计算
+  //TODO: 1.完成分析表的计算
   def computeAnalysisTable(): Unit = {
     //    val derivationMap = derivationList.zipWithIndex.toMap
     val closureVector = computeItems().toVector

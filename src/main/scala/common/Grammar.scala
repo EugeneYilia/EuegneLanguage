@@ -7,13 +7,20 @@ object Grammar {
   val derivationList: DerivationList = List[Derivation](
     STARTER -> Vector(FUNCTIONS),
 
-    FUNCTIONS -> Vector(FUNCTIONS, FUNCTION),
+    FUNCTIONS -> Vector(FUNCTION, FUNCTIONS),
     FUNCTIONS -> Vector(FUNCTION),
     FUNCTION -> Vector(FUNCTION_KEYWORD, ID, LEFT_PAREN, RIGHT_PAREN, BLOCK),
 
     BLOCK -> Vector(LEFT_PAREN, STATEMENTS, RIGHT_PAREN),
 
-    STATEMENTS -> Vector(STATEMENTS, STATEMENT),
+    // 假设存在十个Statements
+    // 如果是statements -> statement + statements
+    // 那么就是1 9   2 8   3 7    4 6   5 5    6 4   7 3   8 2   9 1 从前靠后一条一条吐出来
+    // 如果是statements -> statements + statement
+    // 那么就是9 1   8 2   7 3    6 4   5 5    4 6   3 7   2 8   1 9 倒序从后往前一条一条吐出来
+    // 导致的结果就是倒序执行代码，以致于代码执行顺序错乱，并不能得出想要的结果
+    // 因此采用正序执行代码的方式 为 Statements -> Statement + Statements
+    STATEMENTS -> Vector(STATEMENT, STATEMENTS),
     STATEMENTS -> Vector(STATEMENT),
 
     STATEMENT -> Vector(EXPRESSION, SEMICOLON),
