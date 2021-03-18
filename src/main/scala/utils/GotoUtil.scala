@@ -1,7 +1,7 @@
 package utils
 
 import common.SyntacticSymbol.SyntacticSymbol
-import common.{Closure, Item, ItemSet}
+import common.{Closure, Item}
 import core.LR
 
 object GotoUtil {

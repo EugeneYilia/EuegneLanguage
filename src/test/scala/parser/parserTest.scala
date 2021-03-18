@@ -20,7 +20,6 @@ class parserTest extends AnyFunSuite{
     assert(LR.computeFirst(production__set).filter(p => SyntacticSymbol.isNonTerminalSymbol(p._1)) == Map(T -> Set(b, LEFT_PAREN, a), E -> Set(b, LEFT_PAREN, a), F -> Set(b, LEFT_PAREN)))
   }
 
-  // TODO: fix compute all items bug           items => analysis table
   test("computeAllItems") {
     val productionSet = List(
       STARTER -> Vector(EXPRESSION),

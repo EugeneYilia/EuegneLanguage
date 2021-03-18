@@ -23,28 +23,17 @@ package object LR {
 
     // Bug 所在处
     @tailrec
-    def computeAllItems(intermediateSet: mutable.Set[Closure], resultSet: mutable.Set[Closure]): mutable.Set[Closure] = {
+    def computeAllItems(intermediateSet: Set[Closure], resultSet: Set[Closure]): Set[Closure] = {
       if (intermediateSet.isEmpty) resultSet
       else {
         val newResult = resultSet ++ intermediateSet
         val newIntermediateSetTemp = for {
-          closure:Closure <- intermediateSet
-          syntacticSymbol:SyntacticSymbol <- SyntacticSymbol.values
+          closure: Closure <- intermediateSet
+          syntacticSymbol: SyntacticSymbol <- SyntacticSymbol.values.toSet
           newClosure = GotoUtil.goto(closure, syntacticSymbol)
           if newClosure.nonEmpty
         } yield newClosure
 
-        val next_workbench_mid = for {
-          iI <- intermediateSet
-          xX <- SyntacticSymbol.values
-          g = xX
-          w = iI
-          if g == 'y'
-        } yield g
-
-        //        val newIntermediateSetTemp = intermediateSet
-        //          .map(GotoUtil.goto)
-        //          .filter(_.nonEmpty)
         val newIntermediateSet = newIntermediateSetTemp.diff(newResult)
         computeAllItems(newIntermediateSet, newResult)
       }
@@ -52,11 +41,8 @@ package object LR {
 
     //    val starterItem: Item = (SyntacticSymbol.STARTER, Vector(), Vector(SyntacticSymbol.FUNCTIONS), SyntacticSymbol.$)
     val starterItem: Item = (SyntacticSymbol.STARTER, Vector(), Grammar.getUsedDerivationList.filter(_._1 == SyntacticSymbol.STARTER).map(_._2).head, SyntacticSymbol.$)
-    val startClosure = mutable.Set(computeClosure(starterItem))
-    val finalResult = computeAllItems(startClosure, mutable.Set())
-    finalResult
-      .map(_.toSet)
-      .toSet
+    val startClosure = Set[Closure](computeClosure(starterItem))
+    computeAllItems(startClosure, Set[Closure]())
   }
 
   def computeClosure(item: Item): Closure = {
