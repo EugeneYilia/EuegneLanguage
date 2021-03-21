@@ -106,6 +106,14 @@ class TestRandom extends AnyFunSuite {
     }
   }
 
+  test("test folder left") {
+    val initList = Vector(0, 1, 2, 3, 4)
+    val result = initList.foldLeft("")((result, data) => {
+      result + 2 * data
+    })
+    println(result)
+  }
+
   def returnTuple: (ListBuffer[Char], ListBuffer[Char]) = {
     (ListBuffer[Char]('A', 'B'), ListBuffer[Char]('C', 'D'))
   }

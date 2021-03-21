@@ -24,6 +24,7 @@ package object common {
   // 最终生成的项目集合闭包
   type Closure = Set[Item]
 
-  //                         actionMap                                 gotoMap
-  type Table = (Map[(State, SyntacticSymbol), Action], Map[(State, SyntacticSymbol), State])
+  type ActionMap = Map[(State, SyntacticSymbol), Action]
+  type GotoMap = Map[(State, SyntacticSymbol), State]
+  type AnalysisTable = (ActionMap, GotoMap)
 }

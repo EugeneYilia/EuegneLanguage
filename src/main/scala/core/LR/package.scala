@@ -2,6 +2,7 @@ package core
 
 import common.SyntacticSymbol.SyntacticSymbol
 import common._
+import parser.lrParser.{Accept, Action}
 import utils.{ClosureUtil, GotoUtil}
 
 import scala.annotation.tailrec
@@ -13,9 +14,37 @@ package object LR {
   def computeAnalysisTable(): Unit = {
     //    val derivationMap = derivationList.zipWithIndex.toMap
     val closureVector = computeItems().toVector
-    println("closureVector: ")
-    closureVector.foreach(println)
-    println()
+    val closureIndexVector = closureVector.zipWithIndex
+    val closureIndexMap = closureIndexVector.toMap
+
+    val initDerivation = Grammar.derivationList.filter(_._1 == SyntacticSymbol.STARTER).map(_._2).head
+    val initItem = (SyntacticSymbol.STARTER, Vector[SyntacticSymbol](), initDerivation, SyntacticSymbol.$)
+    val initClosure = computeClosure(initItem)
+    val initState = closureIndexMap(initClosure)
+
+    val initActionMap: ActionMap = Map[(State, SyntacticSymbol), Action]()
+    val initGotoMap: GotoMap = Map[(State, SyntacticSymbol), State]()
+    val initAnalysisTable: AnalysisTable = (initActionMap, initGotoMap)
+
+    //    println("closureIndexMap: ")
+    //    closureIndexMap.foreach(println)
+    //    println()
+
+    def computeAnaylysisTable(analysisTable: AnalysisTable, closure: Closure): AnalysisTable = {
+      val (actionMap, gotoMap) = analysisTable
+      val state = closureIndexMap(closure)
+
+      def computeActionMap(actionMap: ActionMap, item: Item): ActionMap = item match {
+        case (SyntacticSymbol.STARTER, Vector(SyntacticSymbol.FUNCTIONS), Vector(), SyntacticSymbol.$) =>
+          actionMap + ((state, SyntacticSymbol.$) -> Accept())
+        case (starter, intermediate, derivationFirst +: derivationleft, terminalSymbol) =>
+
+      }
+
+    }
+
+
+    (closureVector.foldLeft(initAnalysisTable)(computeAnaylysisTable), initState)
   }
 
 
