@@ -30,21 +30,21 @@ package object LR {
     //    closureIndexMap.foreach(println)
     //    println()
 
-    def computeAnaylysisTable(analysisTable: AnalysisTable, closure: Closure): AnalysisTable = {
+    def computeAnalysisTable(analysisTable: AnalysisTable, closure: Closure): AnalysisTable = {
       val (actionMap, gotoMap) = analysisTable
       val state = closureIndexMap(closure)
 
       def computeActionMap(actionMap: ActionMap, item: Item): ActionMap = item match {
         case (SyntacticSymbol.STARTER, Vector(SyntacticSymbol.FUNCTIONS), Vector(), SyntacticSymbol.$) =>
           actionMap + ((state, SyntacticSymbol.$) -> Accept())
-        case (starter, intermediate, derivationFirst +: derivationleft, terminalSymbol) =>
+        case (starter, intermediate, derivationFirst +: derivationLeft, terminalSymbol) =>
 
       }
 
     }
 
 
-    (closureVector.foldLeft(initAnalysisTable)(computeAnaylysisTable), initState)
+    (closureVector.foldLeft(initAnalysisTable)(computeAnalysisTable), initState)
   }
 
 
