@@ -58,7 +58,8 @@ package object LR {
 
       val newActionMap = closure.foldLeft(actionMap)(computeActionMap)
       // 非终结符决定了gotoMap的构建
-      val newGotoMap = gotoMap ++ SyntacticSymbol.nonTerminalSymbolSet.
+      val newGotoMap = gotoMap ++ SyntacticSymbol.nonTerminalSymbolSet
+        .flatMap(nonTerminalSymbol => GotoUtil.goto(closure,nonTerminalSymbol))// 使用flatten对Option进行拆除
 
       //        (newActionMap,newGotoMap)
     }
