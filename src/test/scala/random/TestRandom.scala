@@ -118,9 +118,13 @@ class TestRandom extends AnyFunSuite {
     val map = Map[String, List[Int]]()
     val result = map + ("aaa" -> List(1, 2, 3))
     println(result)
-    val newResult = map + ("bbb" -> List(3, 4))
+    val newResult = result + ("aaa" -> List(3, 4))
     println(newResult)
   }
+  // Result:
+  // Map(aaa -> List(1, 2, 3))
+  // Map(aaa -> List(3, 4))
+  // 会对之前结果进行覆盖
 
   def returnTuple: (ListBuffer[Char], ListBuffer[Char]) = {
     (ListBuffer[Char]('A', 'B'), ListBuffer[Char]('C', 'D'))

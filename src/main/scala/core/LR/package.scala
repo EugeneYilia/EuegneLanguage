@@ -41,7 +41,8 @@ package object LR {
           if(actionMap.contains((state,derivationFirst))){
             return actionMap
           }
-          val newClosure = GotoUtil.goto()
+          actionMap
+//          val newClosure = GotoUtil.goto()
         case _ =>
           actionMap
 
