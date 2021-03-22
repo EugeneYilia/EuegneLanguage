@@ -37,9 +37,17 @@ package object LR {
       def computeActionMap(actionMap: ActionMap, item: Item): ActionMap = item match {
         case (SyntacticSymbol.STARTER, Vector(SyntacticSymbol.FUNCTIONS), Vector(), SyntacticSymbol.$) =>
           actionMap + ((state, SyntacticSymbol.$) -> Accept())
-        case (starter, intermediate, derivationFirst +: derivationLeft, terminalSymbol) =>
+        case (starter, intermediate, derivationFirst +: derivationLeft, terminalSymbol) if SyntacticSymbol.isTerminalSymbol(derivationFirst)=>
+          if(actionMap.contains((state,derivationFirst))){
+            return actionMap
+          }
+          val newClosure = GotoUtil.goto()
+        case _ =>
+          actionMap
 
       }
+
+      analysisTable
 
     }
 
