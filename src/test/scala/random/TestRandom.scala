@@ -126,6 +126,14 @@ class TestRandom extends AnyFunSuite {
   // Map(aaa -> List(3, 4))
   // 会对之前结果进行覆盖
 
+  test("test ->") {
+    val x = "xxx" -> "yyy"// 构成tuple元组()   结果为("xxx","yyy")
+    println(x)
+    val y = List(x)
+    println(y)
+  }
+
+
   def returnTuple: (ListBuffer[Char], ListBuffer[Char]) = {
     (ListBuffer[Char]('A', 'B'), ListBuffer[Char]('C', 'D'))
   }

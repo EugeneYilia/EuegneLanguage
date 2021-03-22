@@ -2,7 +2,7 @@ package core
 
 import common.SyntacticSymbol.SyntacticSymbol
 import common._
-import parser.lrParser.{Accept, Action}
+import parser.lrParser.{Accept, Action, Reduce, Shift}
 import utils.{ClosureUtil, GotoUtil}
 
 import scala.annotation.tailrec
@@ -32,24 +32,35 @@ package object LR {
 
     def computeAnalysisTable(analysisTable: AnalysisTable, closure: Closure): AnalysisTable = {
       val (actionMap, gotoMap) = analysisTable
+      // 状态取决于求计算分析表过程中传入进来的closure根据closureIndexMap来获取对应的state
       val state = closureIndexMap(closure)
 
+      // actionMap中key的state都为根绝closureIndexMap和closure计算出的state
+      // actionMap中key的语法符号在acc状态下: 为项目初始产生式中的终结符号$
+      //                       在shift状态下: 为项目推导式中的第一个符号，该符号必须是终结符号
+      //                       在reduce状态下: 为该项目Item的terminalSymbol终结符好
+      // 终结符进行的操作包括ACCEPT SHIFT REDUCE行动
       def computeActionMap(actionMap: ActionMap, item: Item): ActionMap = item match {
         case (SyntacticSymbol.STARTER, Vector(SyntacticSymbol.FUNCTIONS), Vector(), SyntacticSymbol.$) =>
           actionMap + ((state, SyntacticSymbol.$) -> Accept())
-        case (starter, intermediate, derivationFirst +: derivationLeft, terminalSymbol) if SyntacticSymbol.isTerminalSymbol(derivationFirst)=>
-          if(actionMap.contains((state,derivationFirst))){
+        case (starter, intermediate, derivationFirst +: derivationLeft, terminalSymbol) if SyntacticSymbol.isTerminalSymbol(derivationFirst) =>
+          if (actionMap.contains((state, derivationFirst))) {
             return actionMap
           }
-          actionMap
-//          val newClosure = GotoUtil.goto()
-        case _ =>
-          actionMap
-
+          val newClosure = GotoUtil.goto(closure, derivationFirst)
+          val newState = closureIndexMap(newClosure)
+          actionMap + ((state, derivationFirst) -> Shift(newState))
+        case (starter, intermediate, Vector(), terminalSymbol) =>
+          actionMap + ((state, terminalSymbol) -> Reduce(starter -> intermediate))
+        case _ => actionMap
       }
 
-      analysisTable
 
+      val newActionMap = closure.foldLeft(actionMap)(computeActionMap)
+      // 非终结符决定了gotoMap的构建
+      val newGotoMap = gotoMap ++ SyntacticSymbol.nonTerminalSymbolSet.
+
+      //        (newActionMap,newGotoMap)
     }
 
 

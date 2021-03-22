@@ -19,7 +19,7 @@ object SyntacticSymbol extends Enumeration {
   val S, A, B, C, D, E, F, M, N, T = Value
   val a, b, c, d, e = Value
 
-  private val terminalSymbolSet = Set(
+  val terminalSymbolSet = Set(
     $, INT_KEYWORD, FLOAT_KEYWORD,
     FUNCTION_KEYWORD,
     IF_KEYWORD, ELIF_KEYWORD, ELSE_KEYWORD, FOR_KEYWORD,
@@ -29,7 +29,7 @@ object SyntacticSymbol extends Enumeration {
     SEMICOLON, COMMA, LEFT_PAREN, RIGHT_PAREN, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_BRACE, RIGHT_BRACE,
     a, b, c, d, e
   )
-  private val nonTerminalSymbolSet = Set(
+  val nonTerminalSymbolSet = Set(
     STARTER, FUNCTIONS, FUNCTION, STATEMENTS, STATEMENT, EXPRESSION, BLOCK,
     S, A, B, C, D, E, F, M, N, T
   )
