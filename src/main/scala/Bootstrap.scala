@@ -39,10 +39,7 @@ object Bootstrap extends App {
   LR.computeClosure(originalItem).foreach(println)
   println()
 
-  println("Parse: ")
-  LR.computeAnalysisTable()
-
-
+  println("Analysis Table: ")
   val initDerivation = Grammar.derivationList.filter(_._1 == SyntacticSymbol.STARTER).map(_._2).head
   val initItem = (SyntacticSymbol.STARTER, Vector[SyntacticSymbol](), initDerivation, SyntacticSymbol.$)
   val initClosure = computeClosure(initItem)
@@ -51,6 +48,12 @@ object Bootstrap extends App {
   val analysisTable = LR.computeAnalysisTable()
   val actionMap = analysisTable._1
   val gotoMap = analysisTable._2
+  println("Action Map")
+  actionMap.foreach(println)
+  println()
+  println("Goto Map")
+  gotoMap.foreach(println)
+  println()
 
   val initStateStack = Vector(initState)
   val initNodeStack = Vector[Node](BasicNode(""))

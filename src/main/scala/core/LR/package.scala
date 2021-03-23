@@ -72,7 +72,6 @@ package object LR {
     Grammar.closureIndexMap(closure)
   }
 
-
   // 根据项目的产生式计算出所有的项目闭包
   def computeItems(): Set[Closure] = {
 
