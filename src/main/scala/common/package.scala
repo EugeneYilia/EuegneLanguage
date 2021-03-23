@@ -1,3 +1,4 @@
+import common.ASTNode.Node
 import common.SyntacticSymbol.SyntacticSymbol
 
 import scala.collection.mutable
@@ -27,4 +28,6 @@ package object common {
   type ActionMap = Map[(State, SyntacticSymbol), Action]
   type GotoMap = Map[(State, SyntacticSymbol), State]
   type AnalysisTable = (ActionMap, GotoMap)
+
+  type ParseResult = (Node, Vector[Token])
 }

@@ -127,12 +127,33 @@ class TestRandom extends AnyFunSuite {
   // 会对之前结果进行覆盖
 
   test("test ->") {
-    val x = "xxx" -> "yyy"// 构成tuple元组()   结果为("xxx","yyy")
+    val x = "xxx" -> "yyy" // 构成tuple元组()   结果为("xxx","yyy")
     println(x)
     val y = List(x)
     println(y)
   }
 
+  test("test fetch element in map") {
+    val map = mutable.Map[String, String]()
+    map += ("a" -> "b")
+    println(map)
+    println(map("a")) // 打印出b
+    //    println(map("c"))// 报错java.util.NoSuchElementException: key not found: c
+    println()
+    println(map.get("a")) // Some(b)
+    println(map.get("c")) // None
+  }
+  // 由上述可见，从Map中取元素的时候最好采用map.get(key)的方式来获取value比较好，对结果进行pattern match然后进行操作最优雅
+
+
+  test("test +: in vector") {
+    val vector = Vector(1, 2, 3)
+    val newElement = 4
+    val newVector = newElement +: vector
+    println(newVector) // Vector(4, 1, 2, 3)
+    println(newVector.head) // 4
+    println(newVector(0)) // 4
+  }
 
   def returnTuple: (ListBuffer[Char], ListBuffer[Char]) = {
     (ListBuffer[Char]('A', 'B'), ListBuffer[Char]('C', 'D'))
