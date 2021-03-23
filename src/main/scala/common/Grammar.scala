@@ -3,6 +3,7 @@ package common
 import common.SyntacticSymbol.{ASSIGN, BLOCK, ELSE_KEYWORD, EXPRESSION, FUNCTION, FUNCTIONS, FUNCTION_KEYWORD, ID, IF_KEYWORD, INT_CONSTANT, LEFT_PAREN, MINUS, MULTI, PLUS, PRINTLN, RIGHT_PAREN, SEMICOLON, STARTER, STATEMENT, STATEMENTS}
 import core.LR
 
+// 一个 object 定义可以看成是使用了lazy val定义一个匿名类实例的简化方式
 object Grammar {
   val derivationList: DerivationList = List[Derivation](
     STARTER -> Vector(FUNCTIONS),
