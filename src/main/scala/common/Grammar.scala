@@ -50,5 +50,16 @@ object Grammar {
     this.usedDerivationList = usedDerivationList
   }
 
+  lazy val closureVector: Vector[Closure] = {
+    LR.computeItems()
+      .toVector
+  }
+
+  lazy val closureIndexMap: Map[Closure, State] = {
+    LR.computeItems()
+      .toVector
+      .zipWithIndex
+      .toMap
+  }
   //  var closure: Closure = LR.computeClosure()
 }

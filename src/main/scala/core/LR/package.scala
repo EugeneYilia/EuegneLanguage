@@ -10,17 +10,16 @@ import scala.collection.mutable
 
 
 package object LR {
-  //TODO: 1.完成分析表的计算
-  def computeAnalysisTable(): Unit = {
-    //    val derivationMap = derivationList.zipWithIndex.toMap
-    val closureVector = computeItems().toVector
-    val closureIndexVector = closureVector.zipWithIndex
-    val closureIndexMap = closureIndexVector.toMap
 
-    val initDerivation = Grammar.derivationList.filter(_._1 == SyntacticSymbol.STARTER).map(_._2).head
-    val initItem = (SyntacticSymbol.STARTER, Vector[SyntacticSymbol](), initDerivation, SyntacticSymbol.$)
-    val initClosure = computeClosure(initItem)
-    val initState = closureIndexMap(initClosure)
+  def computeAnalysisTable(): AnalysisTable = {
+    //    val derivationMap = derivationList.zipWithIndex.toMap
+
+    //    val closureVector = Grammar.closureVector
+    //    val closureIndexVector = closureVector.zipWithIndex
+    //    val closureIndexMap = closureIndexVector.toMap
+
+    val closureVector = Grammar.closureVector
+    val closureIndexMap = Grammar.closureIndexMap
 
     val initActionMap: ActionMap = Map[(State, SyntacticSymbol), Action]()
     val initGotoMap: GotoMap = Map[(State, SyntacticSymbol), State]()
@@ -58,14 +57,19 @@ package object LR {
 
       val newActionMap = closure.foldLeft(actionMap)(computeActionMap)
       // 非终结符决定了gotoMap的构建
-      val newGotoMap = gotoMap ++ SyntacticSymbol.nonTerminalSymbolSet
-        .flatMap(nonTerminalSymbol => GotoUtil.goto(closure,nonTerminalSymbol))// 使用flatten对Option进行拆除
 
-      //        (newActionMap,newGotoMap)
+      val addedGoto: Set[((Int, SyntacticSymbol), Int)] = SyntacticSymbol.nonTerminalSymbolSet
+        .flatMap(nonTerminalSymbol => closureIndexMap.get(GotoUtil.goto(closure, nonTerminalSymbol)).map(newState => (state, nonTerminalSymbol) -> newState)) // 使用flatten对Option[Int]进行拆除
+      val newGotoMap = gotoMap ++ addedGoto
+
+      (newActionMap, newGotoMap)
     }
 
+    closureVector.foldLeft(initAnalysisTable)(computeAnalysisTable)
+  }
 
-    (closureVector.foldLeft(initAnalysisTable)(computeAnalysisTable), initState)
+  def computeState(closure: Closure): Int = {
+    Grammar.closureIndexMap(closure)
   }
 
 
