@@ -155,6 +155,25 @@ class TestRandom extends AnyFunSuite {
     println(newVector(0)) // 4
   }
 
+  test("test tail") {
+    val vector = Vector(1, 2, 3, 4, 5, 6)
+    println(vector) // Vector(1, 2, 3, 4, 5, 6)
+    println(vector.head) // 1
+    println(vector.tail) // Vector(2, 3, 4, 5, 6)
+  }
+
+  test("test drop") {
+    val vector = Vector(1, 2, 3, 4, 5, 6)
+    println(vector.drop(3)) // Vector(4, 5, 6)
+    // Drop掉前n个，返回剩下的元素构成的Vector
+  }
+
+  test("test splitAt") {
+    val vector = Vector(1, 2, 3, 4, 5, 6)
+    println(vector.splitAt(3)) // (Vector(1, 2, 3),Vector(4, 5, 6))
+    // 分成两个Vector，由前n个元素构成的第一个Vector和从第n+1个开始的元素到最后一个元素构成的第二个Vector
+  }
+
   def returnTuple: (ListBuffer[Char], ListBuffer[Char]) = {
     (ListBuffer[Char]('A', 'B'), ListBuffer[Char]('C', 'D'))
   }

@@ -42,7 +42,7 @@ package object LR {
       def computeActionMap(actionMap: ActionMap, item: Item): ActionMap = item match {
         case (SyntacticSymbol.STARTER, Vector(SyntacticSymbol.FUNCTIONS), Vector(), SyntacticSymbol.$) =>
           actionMap + ((state, SyntacticSymbol.$) -> Accept())
-          // 当derivation部分还不为空的时候，并且其第一个元素为终结符号的时候，此时采取Shift Action
+        // 当derivation部分还不为空的时候，并且其第一个元素为终结符号的时候，此时采取Shift Action
         case (starter, intermediate, derivationFirst +: derivationLeft, terminalSymbol) if SyntacticSymbol.isTerminalSymbol(derivationFirst) =>
           if (actionMap.contains((state, derivationFirst))) {
             return actionMap
@@ -50,7 +50,7 @@ package object LR {
           val newClosure = GotoUtil.goto(closure, derivationFirst)
           val newState = closureIndexMap(newClosure)
           actionMap + ((state, derivationFirst) -> Shift(newState))
-          // 当derivation部分为空的时候，此时进行Reduce Action，只有在Action为Reduce的时候才会使用到GotoMap
+        // 当derivation部分为空的时候，此时进行Reduce Action，只有在Action为Reduce的时候才会使用到GotoMap
         case (starter, intermediate, Vector(), terminalSymbol) =>
           actionMap + ((state, terminalSymbol) -> Reduce(starter -> intermediate))
         case _ => actionMap
@@ -60,9 +60,15 @@ package object LR {
       val newActionMap = closure.foldLeft(actionMap)(computeActionMap)
       // 非终结符决定了gotoMap的构建
 
-      val addedGoto: Set[((Int, SyntacticSymbol), Int)] = SyntacticSymbol.nonTerminalSymbolSet
-        .flatMap(nonTerminalSymbol => closureIndexMap.get(GotoUtil.goto(closure, nonTerminalSymbol)).map(newState => (state, nonTerminalSymbol) -> newState)) // 使用flatten对Option[Int]进行拆除
-      val newGotoMap = gotoMap ++ addedGoto
+      val addedGotoMap: Set[((State, SyntacticSymbol), State)] =
+        SyntacticSymbol
+          .nonTerminalSymbolSet
+          .flatMap(nonTerminalSymbol =>
+            closureIndexMap
+              .get(GotoUtil.goto(closure, nonTerminalSymbol)).
+              map(newState => (state, nonTerminalSymbol) -> newState)
+          ) // 使用flatten对Option[((State,SyntacticSymbol),State)]进行拆除
+      val newGotoMap = gotoMap ++ addedGotoMap
 
       (newActionMap, newGotoMap)
     }
