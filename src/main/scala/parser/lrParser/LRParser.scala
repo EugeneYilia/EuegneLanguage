@@ -1,16 +1,18 @@
 package parser.lrParser
 
 import common.ASTNode.Node
-import common.ASTNode.nonTerminalNode.BasicNode
-import common.SyntacticSymbol.SyntacticSymbol
-import common.{AnalysisTable, Derivation, ParseResult, State, Token}
+import common.ASTNode.nonTerminalNode.{BasicNode, FunctionNode, FunctionsNode}
+import common._
 import parser.lrParser.LRParser.reduce
 
-class LRParser(val analysisTable: AnalysisTable) {
+import scala.annotation.tailrec
+
+final class LRParser(val analysisTable: AnalysisTable) {
 
   private val actionMap = analysisTable._1
   private val gotoMap = analysisTable._2
 
+  @tailrec
   def parse(stateStack: Vector[State], nodeStack: Vector[Node], tokensLeft: Vector[Token]): ParseResult = {
     val currentToken = tokensLeft.head
     val currentTokenSymbol = currentToken._1
@@ -28,6 +30,17 @@ class LRParser(val analysisTable: AnalysisTable) {
             val production = derivation._2
             val productionLength = production.length
             val newStateStack = stateStack.drop(productionLength)
+            val currentState = newStateStack.head
+
+            // goto state 和 之前 state 到底 闭包都是什么
+            val gotoState = gotoMap((currentState, syntacticSymbolStarter))
+
+            // for dev *
+            val indexClosureMap = Grammar.indexClosureMap
+            println(indexClosureMap(currentState))
+            println(indexClosureMap(gotoState))
+            // for dev **
+
 
             /**
              * usedNodeVector： 要进行reduce的node构成的vector
@@ -36,7 +49,7 @@ class LRParser(val analysisTable: AnalysisTable) {
             val (usedNodeVector, leftNodeVector) = nodeStack.splitAt(productionLength)
             val reducedNode = reduce(derivation, usedNodeVector)
 
-            (BasicNode(""), Vector())
+            parse(gotoState +: newStateStack, reducedNode +: leftNodeVector, tokensLeft)
           case Accept() =>
             println("Parse Accept!")
             (nodeStack.head, tokensLeft)
@@ -52,7 +65,15 @@ class LRParser(val analysisTable: AnalysisTable) {
 object LRParser {
   def apply(analysisTable: AnalysisTable): LRParser = new LRParser(analysisTable)
 
-  def reduce(derivation:Derivation,usedNodeVector:Vector[Node]) :Node = derivation match {
-    case
+  def reduce(derivation: Derivation, usedNodeVector: Vector[Node]): Node = derivation match {
+    case (SyntacticSymbol.FUNCTIONS, Vector(SyntacticSymbol.FUNCTION, SyntacticSymbol.FUNCTIONS)) =>
+
+    case (SyntacticSymbol.FUNCTIONS, Vector(SyntacticSymbol.FUNCTION)) =>
+      FunctionsNode(List(usedNodeVector.head.asInstanceOf[FunctionNode]))
+
+
+    case _ =>
+      System.err.println("this derivation not exist in Grammar.")
+      throw new RuntimeException("this derivation not exist in Grammar.")
   }
 }

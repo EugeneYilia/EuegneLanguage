@@ -1,10 +1,11 @@
-import common.ASTNode.Node
-import common.ASTNode.nonTerminalNode.BasicNode
+import common.ASTNode.{Env, Node}
+import common.ASTNode.nonTerminalNode.{BasicNode, FunctionNode, FunctionsNode}
 import common.SyntacticSymbol.SyntacticSymbol
 import common.{Grammar, Item, SyntacticSymbol}
 import core.LR
 import core.LR.computeClosure
 import lexer.Lexer
+import parser.lrParser.LRParser
 
 import scala.io.Source
 
@@ -59,5 +60,16 @@ object Bootstrap extends App {
   val initNodeStack = Vector[Node](BasicNode(""))
 
   // 文法 Grammar -> 分析表 AnalysisTable -> 抽象语法树 AST
+  val (rootNode, leftNodeVector) = LRParser(analysisTable).parse(initStateStack, initNodeStack, tokens.toVector)
 
+
+  println("*** Eugene Program Execute Result ***")
+  val initEnv = Env(None, rootNode.asInstanceOf[FunctionsNode].convertToMap)
+  initEnv.get("main") match {
+    case Some(node) =>
+      node.asInstanceOf[FunctionNode].exec(initEnv)
+    case None =>
+      System.err.println("main function not exist")
+      throw new RuntimeException("main function not exist")
+  }
 }

@@ -62,5 +62,10 @@ object Grammar {
       .zipWithIndex
       .toMap
   }
-  //  var closure: Closure = LR.computeClosure()
+
+  // for development
+  lazy val indexClosureMap: Map[State, Closure] = {
+    for ((key, value) <- closureIndexMap) yield (value, key)
+  }
+
 }
