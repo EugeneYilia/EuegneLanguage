@@ -19,12 +19,11 @@ class LRParser(val analysisTable: AnalysisTable) {
     actionMap.get((currentState, currentTokenSymbol)) match {
       case Some(action) =>
         action match {
-          case Shift(newState) => {
+          case Shift(newState) =>
             val currentTokenValue = currentToken._2
             val newNode = BasicNode(currentTokenValue)
             parse(newState +: stateStack, newNode +: nodeStack, tokensLeft.tail)
-          }
-          case Reduce(derivation) => {
+          case Reduce(derivation) =>
             val syntacticSymbolStarter = derivation._1
             val production = derivation._2
             val productionLength = production.length
@@ -38,7 +37,6 @@ class LRParser(val analysisTable: AnalysisTable) {
             val reducedNode = reduce(derivation, usedNodeVector)
 
             (BasicNode(""), Vector())
-          }
           case Accept() =>
             println("Parse Accept!")
             (nodeStack.head, tokensLeft)
