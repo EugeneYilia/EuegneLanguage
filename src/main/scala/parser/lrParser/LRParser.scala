@@ -65,12 +65,14 @@ final class LRParser(val analysisTable: AnalysisTable) {
 object LRParser {
   def apply(analysisTable: AnalysisTable): LRParser = new LRParser(analysisTable)
 
-  // 注意操作的对象是Node Stack，因此后来的元素在顶上，先来的元素在栈底
+  // 注意操作的对象是Node Stack，因此后来的元素在顶上，先来的元素在栈底   2  1  0
   def reduce(derivation: Derivation, usedNodeVector: Vector[Node]): Node = derivation match {
     case (SyntacticSymbol.FUNCTIONS, Vector(SyntacticSymbol.FUNCTION, SyntacticSymbol.FUNCTIONS)) =>
-      FunctionsNode(usedNodeVector(0).asInstanceOf[FunctionNode] +: usedNodeVector(1).asInstanceOf[] )
+      FunctionsNode(usedNodeVector(0).asInstanceOf[FunctionsNode].functionList :+ usedNodeVector(1).asInstanceOf[FunctionNode])
     case (SyntacticSymbol.FUNCTIONS, Vector(SyntacticSymbol.FUNCTION)) =>
       FunctionsNode(List(usedNodeVector.head.asInstanceOf[FunctionNode]))
+
+    case (SyntacticSymbol.FUNCTION, Vector(SyntacticSymbol.FUNCTION_KEYWORD))
 
 
     case _ =>
