@@ -1,5 +1,5 @@
 fn main() {
-   println(123);
+    println(123);
     a = 2 + 2;
     println(a);
 }
