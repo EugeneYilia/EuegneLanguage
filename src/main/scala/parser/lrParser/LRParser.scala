@@ -9,11 +9,16 @@ import common._
 import parser.lrParser.LRParser.reduce
 
 import scala.annotation.tailrec
+import scala.collection.mutable
 
 final class LRParser(val analysisTable: AnalysisTable) {
 
   private val actionMap = analysisTable._1
   private val gotoMap = analysisTable._2
+
+  private lazy val sortActionMap: mutable.TreeMap[(State, SyntacticSymbol), Action] = {
+    mutable.TreeMap(actionMap.toList: _*)
+  }
 
   @tailrec
   def parse(stateStack: Vector[State], nodeStack: Vector[Node], tokensLeft: Vector[Token]): ParseResult = {
@@ -21,7 +26,7 @@ final class LRParser(val analysisTable: AnalysisTable) {
     val currentTokenSymbol = currentToken._1
 
     val currentState = stateStack.head
-    actionMap.get((currentState, currentTokenSymbol)) match {
+    sortActionMap.get((currentState, currentTokenSymbol)) match {
       case Some(action) =>
         action match {
           case Shift(newState) =>
@@ -60,9 +65,9 @@ final class LRParser(val analysisTable: AnalysisTable) {
             (nodeStack.head, tokensLeft)
         }
       case None =>
-        val currentElement = (currentState, currentTokenSymbol)
+        val currentElement = (currentState, currentTokenSymbol, currentToken._2)
         System.err.println(currentElement)
-        throw new RuntimeException(s"${(currentState, currentTokenSymbol)} parse error")
+        throw new RuntimeException(s"$currentElement parse error")
     }
   }
 }

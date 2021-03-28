@@ -62,7 +62,7 @@ object Matcher {
 
   def matchIdentifier(sourceCharList: List[Char]): MatchResult = {
     sourceCharList match {
-      case first :: restCharList => {
+      case first :: restCharList =>
         if (matchIdHead(first)) {
           val (matchPart, leftCharList) = restCharList.span(matchIdContent)
           matchPart match {
@@ -72,7 +72,6 @@ object Matcher {
         } else {
           None
         }
-      }
       case _ => None
     }
   }
