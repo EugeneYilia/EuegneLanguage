@@ -16,6 +16,7 @@ final class LRParser(val analysisTable: AnalysisTable) {
   private val actionMap = analysisTable._1
   private val gotoMap = analysisTable._2
 
+  // For Dev
   private lazy val sortActionMap: mutable.TreeMap[(State, SyntacticSymbol), Action] = {
     mutable.TreeMap(actionMap.toList: _*)
   }
