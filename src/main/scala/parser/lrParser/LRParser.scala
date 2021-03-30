@@ -70,6 +70,10 @@ final class LRParser(val analysisTable: AnalysisTable) {
             (nodeStack.head, tokensLeft)
         }
       case None =>
+        // 可能由于以下三种情况导致的bug
+        // 1. 计算分析表错误
+        // 2. parse解析代码错误
+        // 3. 构建statementsNode节点方式错误
         val currentElement = (currentState, currentTokenSymbol, currentToken._2)
         System.err.println(currentElement)
         val indexClosureMap = Grammar.indexClosureMap
