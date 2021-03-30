@@ -1,9 +1,12 @@
 package parser
 
-import common.{Closure, Grammar, SyntacticSymbol}
+import common.{Closure, Grammar, Item, SyntacticSymbol}
 import common.SyntacticSymbol._
 import core.LR
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.MatchResult
+import utils.ClosureUtil
+import utils.ClosureUtil.MatchResult
 
 import scala.collection.immutable
 import scala.collection.immutable.HashSet
@@ -58,4 +61,60 @@ class parserTest extends AnyFunSuite {
     val testItem = (STARTER, Vector(FUNCTIONS), Vector(), $)
     println(LR.computeClosure(testItem))
   }
+
+
+
+
+
+  val resolve: Item => Option[ClosureUtil.MatchResult] = {
+    // 当Derivation不止有一个元素的时候会进入到第一个Case
+    case (starter, intermediate, derivationFirst +: derivationLeft, terminalSymbol) if (isNonTerminalSymbol(derivationFirst) && isTerminalSymbol(terminalSymbol)) =>
+      Some((starter, intermediate, derivationFirst, derivationLeft, terminalSymbol)): Some[ClosureUtil.MatchResult]
+    case _ => None
+  }
+
+  test("Resolve") {
+    assert(resolve((STARTER, Vector(), Vector(S), $)) === Some((STARTER, Vector(), S, Vector(), $)))
+    assert(resolve((S, Vector(), Vector(C, C), $)) === Some((S, Vector(), C, Vector(C), $)))
+    assert(resolve((C, Vector(), Vector(c, C), c)).isEmpty)
+    assert(resolve((C, Vector(), Vector(d), c)).isEmpty)
+  }
+
+
+  //  test("compute_Table") {
+  //    val productionVector = Vector(
+  //      Starter -> Vector(S),
+  //      S -> Vector(C, C),
+  //      C -> Vector(c, C),
+  //      C -> Vector(d)
+  //    )
+  //    val (Table(action, goto),state) = compute_Table(productionVector)
+  //    val expected_action = Map(
+  //      ((6, d), Action.S(3)),
+  //      ((5, c), Action.S(2)),
+  //      ((3, c), Action.r(3)),
+  //      ((2, c), Action.S(2)),
+  //      ((0, d), Action.S(3)),
+  //      ((8, $), Action.r(2)),
+  //      ((6, c), Action.S(6)),
+  //      ((4, c), Action.r(2)),
+  //      ((7, $), Action.r(1)),
+  //      ((0, c), Action.S(6)),
+  //      ((2, d), Action.S(1)),
+  //      ((9, $), Action.acc()),
+  //      ((4, d), Action.r(2)),
+  //      ((1, $), Action.r(3)),
+  //      ((3, d), Action.r(3)),
+  //      ((5, d), Action.S(1))
+  //    )
+  //    assertResult(expected_action)(action)
+  //    val expected_goto = Map(
+  //      ((6, C), 4),
+  //      ((0, C), 5),
+  //      ((5, C), 7),
+  //      ((2, C), 8),
+  //      ((0, S), 9)
+  //    )
+  //    assertResult(expected_goto)(goto)
+  //  }
 }
