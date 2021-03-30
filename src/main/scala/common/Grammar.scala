@@ -8,8 +8,9 @@ object Grammar {
   val derivationList: DerivationList = List[Derivation](
     STARTER -> Vector(FUNCTIONS),
 
-    FUNCTIONS -> Vector(FUNCTION, FUNCTIONS),
     FUNCTIONS -> Vector(FUNCTION),
+    FUNCTIONS -> Vector(FUNCTION, FUNCTIONS),
+
     FUNCTION -> Vector(FUNCTION_KEYWORD, ID, LEFT_PAREN, RIGHT_PAREN, BLOCK),
 
     BLOCK -> Vector(LEFT_BRACE, STATEMENTS, RIGHT_BRACE),
@@ -21,8 +22,8 @@ object Grammar {
     // 那么就是9 1   8 2   7 3    6 4   5 5    4 6   3 7   2 8   1 9 倒序从后往前一条一条吐出来
     // 导致的结果就是倒序执行代码，以致于代码执行顺序错乱，并不能得出想要的结果
     // 因此采用正序执行代码的方式 为 Statements -> Statement + Statements
-    STATEMENTS -> Vector(STATEMENT, STATEMENTS),
     STATEMENTS -> Vector(STATEMENT),
+    STATEMENTS -> Vector(STATEMENT, STATEMENTS),
 
     STATEMENT -> Vector(EXPRESSION, SEMICOLON),
 

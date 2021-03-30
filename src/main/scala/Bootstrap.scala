@@ -60,7 +60,13 @@ object Bootstrap extends App {
   val initNodeStack = Vector[Node](BasicNode(""))
 
   // 文法 Grammar -> 分析表 AnalysisTable -> 抽象语法树 AST
-  val (rootNode, leftNodeVector) = LRParser(analysisTable).parse(initStateStack, initNodeStack, tokens.toVector)
+  val lrParser = LRParser(analysisTable)
+
+  // for debug **
+  lrParser.showAnalysisTable()
+  // for debug ****
+
+  val (rootNode, leftNodeVector) = lrParser.parse(initStateStack, initNodeStack, tokens.toVector)
 
 
   println("*** Eugene Program Execute Result ***")

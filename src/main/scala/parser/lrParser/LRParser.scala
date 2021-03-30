@@ -21,6 +21,10 @@ final class LRParser(val analysisTable: AnalysisTable) {
     mutable.TreeMap(actionMap.toList: _*)
   }
 
+  private lazy val sortGotoMap: mutable.TreeMap[(State, SyntacticSymbol), State] = {
+    mutable.TreeMap(gotoMap.toList: _*)
+  }
+
   @tailrec
   def parse(stateStack: Vector[State], nodeStack: Vector[Node], tokensLeft: Vector[Token]): ParseResult = {
     val currentToken = tokensLeft.head
@@ -68,8 +72,18 @@ final class LRParser(val analysisTable: AnalysisTable) {
       case None =>
         val currentElement = (currentState, currentTokenSymbol, currentToken._2)
         System.err.println(currentElement)
+        val indexClosureMap = Grammar.indexClosureMap
+        System.err.println(indexClosureMap(currentState))
         throw new RuntimeException(s"$currentElement parse error")
     }
+  }
+
+  def showAnalysisTable(): Unit = {
+    println("sortActionMap")
+    this.sortActionMap.foreach(println)
+
+    println("sortGotoMap")
+    this.sortGotoMap.foreach(println)
   }
 }
 
@@ -78,10 +92,10 @@ object LRParser {
 
   // 注意操作的对象是Node Stack，因此后来的元素在顶上，先来的元素在栈底   2  1  0
   def reduce(derivation: Derivation, usedNodeVector: Vector[Node]): Node = derivation match {
-    case FUNCTIONS -> Vector(FUNCTION, FUNCTIONS) =>
-      FunctionsNode(usedNodeVector(1).asInstanceOf[FunctionNode] +: usedNodeVector(0).asInstanceOf[FunctionsNode].functionList)
     case FUNCTIONS -> Vector(FUNCTION) =>
       FunctionsNode(List(usedNodeVector.head.asInstanceOf[FunctionNode]))
+    case FUNCTIONS -> Vector(FUNCTION, FUNCTIONS) =>
+      FunctionsNode(usedNodeVector(1).asInstanceOf[FunctionNode] +: usedNodeVector(0).asInstanceOf[FunctionsNode].functionList)
 
     case FUNCTION -> Vector(FUNCTION_KEYWORD, ID, LEFT_PAREN, RIGHT_PAREN, BLOCK) =>
       FunctionNode(usedNodeVector(3).asInstanceOf[BasicNode].value, usedNodeVector(0).asInstanceOf[StatementsNode])
@@ -89,10 +103,10 @@ object LRParser {
     case BLOCK -> Vector(LEFT_BRACE, STATEMENTS, RIGHT_BRACE) =>
       usedNodeVector(1).asInstanceOf[StatementsNode]
 
-    case STATEMENTS -> Vector(STATEMENT, STATEMENTS) =>
-      StatementsNode(usedNodeVector(1).asInstanceOf[StatementNode] +: usedNodeVector(0).asInstanceOf[StatementsNode].statementList)
     case STATEMENTS -> Vector(STATEMENT) =>
       StatementsNode(List(usedNodeVector.head.asInstanceOf[StatementNode]))
+    case STATEMENTS -> Vector(STATEMENT, STATEMENTS) =>
+      StatementsNode(usedNodeVector(1).asInstanceOf[StatementNode] +: usedNodeVector(0).asInstanceOf[StatementsNode].statementList)
 
     case STATEMENT -> Vector(EXPRESSION, SEMICOLON) =>
       StatementNode(usedNodeVector(1).asInstanceOf[ExpressionNode])
@@ -121,4 +135,6 @@ object LRParser {
       System.err.println(errorMsg)
       throw new RuntimeException(errorMsg)
   }
+
+
 }

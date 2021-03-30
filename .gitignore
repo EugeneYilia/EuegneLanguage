@@ -2,3 +2,7 @@
 target/*
 project/*
 .bsp/*
+
+reference/LR1-compiler/.idea/*
+reference/LR1-compiler/project/*
+reference/LR1-compiler/target/*
