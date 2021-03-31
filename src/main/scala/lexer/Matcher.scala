@@ -86,11 +86,11 @@ object Matcher {
 
 
   def apply(sourceCharList: List[Char]): MatchResult = {
-    matchKeyword(sourceCharList)
+    matchBuiltInFunction(sourceCharList)
+      .orElse(matchKeyword(sourceCharList))
       .orElse(matchOperator(sourceCharList))
       .orElse(matchSeparator(sourceCharList))
       .orElse(matchConstant(sourceCharList))
       .orElse(matchIdentifier(sourceCharList))
-      .orElse(matchBuiltInFunction(sourceCharList))
   }
 }

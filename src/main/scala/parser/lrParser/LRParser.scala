@@ -74,6 +74,7 @@ final class LRParser(val analysisTable: AnalysisTable) {
         // 1. 计算分析表错误
         // 2. parse解析代码错误
         // 3. 构建statementsNode节点方式错误
+        System.err.println("ActionMap can't find action to do.")
         val currentElement = (currentState, currentTokenSymbol, currentToken._2)
         System.err.println(currentElement)
         val indexClosureMap = Grammar.indexClosureMap

@@ -1,7 +1,7 @@
 package common.ASTNode.terminalNode.literalNode
 
-import common.ASTNode.{Env, ExecResult, LiteralNode}
+import common.ASTNode.{Env, ExecResult}
 
-case class IntegerLiteralNode(value: Int) extends LiteralNode {
+case class IntegerLiteralNode(override val value: Int) extends BaseLiteralNode {
   override def exec(env: Env): Option[ExecResult] = Some(ExecResult(this))
 }
