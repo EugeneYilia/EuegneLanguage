@@ -129,6 +129,8 @@ object LRParser {
       BinaryOpNode('+', usedNodeVector(2).asInstanceOf[ExpressionNode], usedNodeVector(0).asInstanceOf[ExpressionNode])
     case EXPRESSION -> Vector(EXPRESSION, MINUS, EXPRESSION) =>
       BinaryOpNode('-', usedNodeVector(2).asInstanceOf[ExpressionNode], usedNodeVector(0).asInstanceOf[ExpressionNode])
+    // Bug原因是构建分析表的时候出错  computeAnalysisTable先进行了reduce执行了assign操作，然后shift移位，然后reduce执行了multi操作
+    // 正确分析表应该先进行multi操作，之后再进行assign操作
     case EXPRESSION -> Vector(EXPRESSION, MULTI, EXPRESSION) =>
       BinaryOpNode('*', usedNodeVector(2).asInstanceOf[ExpressionNode], usedNodeVector(0).asInstanceOf[ExpressionNode])
     case EXPRESSION -> Vector(ID, ASSIGN, EXPRESSION) =>
