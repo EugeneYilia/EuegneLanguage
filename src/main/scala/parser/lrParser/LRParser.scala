@@ -74,6 +74,7 @@ final class LRParser(val analysisTable: AnalysisTable) {
         // 1. 计算分析表错误
         // 2. parse解析代码错误
         // 3. 构建statementsNode节点方式错误
+        // 4. Matcher匹配出现顺序错误 将内置函数的调用当成了Id，比如说将println符号识别为Id而不是内置函数println
         System.err.println("ActionMap can't find action to do.")
         val currentElement = (currentState, currentTokenSymbol, currentToken._2)
         System.err.println(currentElement)
