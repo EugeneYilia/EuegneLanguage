@@ -174,6 +174,70 @@ class TestRandom extends AnyFunSuite {
     // 分成两个Vector，由前n个元素构成的第一个Vector和从第n+1个开始的元素到最后一个元素构成的第二个Vector
   }
 
+
+  test("test ???") {
+    val x = new TestX()
+    val result = x.test() // val result: Int  该行代码会报错：scala.NotImplementedError: an implementation is missing
+    println(result)
+  }
+
+  class TestX {
+    def test(): Int = ???
+  }
+  // 对???方法的使用会报如下错误 ↓👇
+  //an implementation is missing
+  //scala.NotImplementedError: an implementation is missing
+  //	at scala.Predef$.$qmark$qmark$qmark(Predef.scala:345)
+  //	at random.TestRandom$TestX.test(TestRandom.scala:184)
+  //	at random.TestRandom.$anonfun$new$29(TestRandom.scala:179)
+  //	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+  //	at org.scalatest.OutcomeOf.outcomeOf(OutcomeOf.scala:85)
+  //	at org.scalatest.OutcomeOf.outcomeOf$(OutcomeOf.scala:83)
+  //	at org.scalatest.OutcomeOf$.outcomeOf(OutcomeOf.scala:104)
+  //	at org.scalatest.Transformer.apply(Transformer.scala:22)
+  //	at org.scalatest.Transformer.apply(Transformer.scala:20)
+  //	at org.scalatest.funsuite.AnyFunSuiteLike$$anon$1.apply(AnyFunSuiteLike.scala:190)
+  //	at org.scalatest.TestSuite.withFixture(TestSuite.scala:196)
+  //	at org.scalatest.TestSuite.withFixture$(TestSuite.scala:195)
+  //	at org.scalatest.funsuite.AnyFunSuite.withFixture(AnyFunSuite.scala:1563)
+  //	at org.scalatest.funsuite.AnyFunSuiteLike.invokeWithFixture$1(AnyFunSuiteLike.scala:188)
+  //	at org.scalatest.funsuite.AnyFunSuiteLike.$anonfun$runTest$1(AnyFunSuiteLike.scala:200)
+  //	at org.scalatest.SuperEngine.runTestImpl(Engine.scala:306)
+  //	at org.scalatest.funsuite.AnyFunSuiteLike.runTest(AnyFunSuiteLike.scala:200)
+  //	at org.scalatest.funsuite.AnyFunSuiteLike.runTest$(AnyFunSuiteLike.scala:182)
+  //	at org.scalatest.funsuite.AnyFunSuite.runTest(AnyFunSuite.scala:1563)
+  //	at org.scalatest.funsuite.AnyFunSuiteLike.$anonfun$runTests$1(AnyFunSuiteLike.scala:233)
+  //	at org.scalatest.SuperEngine.$anonfun$runTestsInBranch$1(Engine.scala:413)
+  //	at scala.collection.immutable.List.foreach(List.scala:333)
+  //	at org.scalatest.SuperEngine.traverseSubNodes$1(Engine.scala:401)
+  //	at org.scalatest.SuperEngine.runTestsInBranch(Engine.scala:396)
+  //	at org.scalatest.SuperEngine.runTestsImpl(Engine.scala:475)
+  //	at org.scalatest.funsuite.AnyFunSuiteLike.runTests(AnyFunSuiteLike.scala:233)
+  //	at org.scalatest.funsuite.AnyFunSuiteLike.runTests$(AnyFunSuiteLike.scala:232)
+  //	at org.scalatest.funsuite.AnyFunSuite.runTests(AnyFunSuite.scala:1563)
+  //	at org.scalatest.Suite.run(Suite.scala:1112)
+  //	at org.scalatest.Suite.run$(Suite.scala:1094)
+  //	at org.scalatest.funsuite.AnyFunSuite.org$scalatest$funsuite$AnyFunSuiteLike$$super$run(AnyFunSuite.scala:1563)
+  //	at org.scalatest.funsuite.AnyFunSuiteLike.$anonfun$run$1(AnyFunSuiteLike.scala:237)
+  //	at org.scalatest.SuperEngine.runImpl(Engine.scala:535)
+  //	at org.scalatest.funsuite.AnyFunSuiteLike.run(AnyFunSuiteLike.scala:237)
+  //	at org.scalatest.funsuite.AnyFunSuiteLike.run$(AnyFunSuiteLike.scala:236)
+  //	at org.scalatest.funsuite.AnyFunSuite.run(AnyFunSuite.scala:1563)
+  //	at org.scalatest.tools.SuiteRunner.run(SuiteRunner.scala:45)
+  //	at org.scalatest.tools.Runner$.$anonfun$doRunRunRunDaDoRunRun$13(Runner.scala:1320)
+  //	at org.scalatest.tools.Runner$.$anonfun$doRunRunRunDaDoRunRun$13$adapted(Runner.scala:1314)
+  //	at scala.collection.immutable.List.foreach(List.scala:333)
+  //	at org.scalatest.tools.Runner$.doRunRunRunDaDoRunRun(Runner.scala:1314)
+  //	at org.scalatest.tools.Runner$.$anonfun$runOptionallyWithPassFailReporter$24(Runner.scala:993)
+  //	at org.scalatest.tools.Runner$.$anonfun$runOptionallyWithPassFailReporter$24$adapted(Runner.scala:971)
+  //	at org.scalatest.tools.Runner$.withClassLoaderAndDispatchReporter(Runner.scala:1480)
+  //	at org.scalatest.tools.Runner$.runOptionallyWithPassFailReporter(Runner.scala:971)
+  //	at org.scalatest.tools.Runner$.run(Runner.scala:798)
+  //	at org.scalatest.tools.Runner.run(Runner.scala)
+  //	at org.jetbrains.plugins.scala.testingSupport.scalaTest.ScalaTestRunner.runScalaTest2or3(ScalaTestRunner.java:38)
+  //	at org.jetbrains.plugins.scala.testingSupport.scalaTest.ScalaTestRunner.main(ScalaTestRunner.java:25)
+
+
   def returnTuple: (ListBuffer[Char], ListBuffer[Char]) = {
     (ListBuffer[Char]('A', 'B'), ListBuffer[Char]('C', 'D'))
   }
