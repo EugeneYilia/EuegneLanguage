@@ -21,7 +21,7 @@ object Bootstrap extends App {
   println(fileContent)
   println()
 
-  var tokens = Lexer(fileContent) :+ (SyntacticSymbol.$, null)
+  val tokens = Lexer(fileContent) :+ (SyntacticSymbol.$, null)
 
   println(s"tokens: ")
   println(tokens.mkString)
