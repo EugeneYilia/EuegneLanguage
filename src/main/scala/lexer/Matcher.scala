@@ -28,7 +28,7 @@ object Matcher {
     case '=' :: '=' :: restCharList => Some(((EQUAL, null), restCharList))
     case '=' :: restCharList => Some(((ASSIGN, null), restCharList))
     case '>' :: '=' :: restCharList => Some(((GE, null), restCharList))
-    case '<' :: '+' :: restCharList => Some(((LE, null), restCharList))
+    case '<' :: '=' :: restCharList => Some(((LE, null), restCharList))
     case '<' :: restCharList => Some(((LT, null), restCharList))
     case '>' :: restCharList => Some(((GT, null), restCharList))
     case _ => None
