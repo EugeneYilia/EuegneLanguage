@@ -16,9 +16,9 @@ case class IfNode(condition: ExpressionNode, passStatements: StatementsNode, fai
           failStatements.exec(Env(Some(env), mutable.Map[String, Node]()))
         }
       case None =>
-        val errMsg = s"IFNode condition: $condition exec return None"
-        System.err.println(errMsg)
-        throw new RuntimeException(errMsg)
+        val errorMsg = s"IFNode condition: $condition exec return None"
+        System.err.println(errorMsg)
+        throw new RuntimeException(errorMsg)
     }
   }
 }

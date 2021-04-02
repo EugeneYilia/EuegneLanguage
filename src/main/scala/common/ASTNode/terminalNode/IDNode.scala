@@ -11,9 +11,9 @@ case class IDNode(name: String) extends ExpressionNode {
     env.get(name) match {
       case Some(node) => Some(ExecResult(node.asInstanceOf[ExpressionNode]))
       case None =>
-        val errMsg = s"IDNode Id: ${name} not exist"
-        System.err.println(errMsg)
-        throw new RuntimeException(errMsg)
+        val errorMsg = s"IDNode Id: ${name} not exist"
+        System.err.println(errorMsg)
+        throw new RuntimeException(errorMsg)
     }
 
   override def toString: String = this.name

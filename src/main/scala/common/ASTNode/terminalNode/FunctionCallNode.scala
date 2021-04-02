@@ -9,9 +9,9 @@ case class FunctionCallNode(name: String) extends ExpressionNode {
       case Some(node) =>
         node.asInstanceOf[FunctionNode].exec(env)
       case None =>
-        val errMsg = s"FunctionCallNode Id: ${name} not exist"
-        System.err.println(errMsg)
-        throw new RuntimeException(errMsg)
+        val errorMsg = s"FunctionCallNode Id: $name not exist"
+        System.err.println(errorMsg)
+        throw new RuntimeException(errorMsg)
     }
 
   override def toString: String = this.name
