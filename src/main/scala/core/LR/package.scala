@@ -83,7 +83,6 @@ package object LR {
   // 根据项目的产生式计算出所有的项目闭包
   def computeItems(): Set[Closure] = {
 
-    // Bug 所在处
     @tailrec
     def computeAllItems(intermediateSet: Set[Closure], resultSet: Set[Closure]): Set[Closure] = {
       if (intermediateSet.isEmpty) resultSet
