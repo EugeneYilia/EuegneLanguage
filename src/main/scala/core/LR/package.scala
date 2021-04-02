@@ -44,9 +44,10 @@ package object LR {
           actionMap + ((state, SyntacticSymbol.$) -> Accept())
         // 当derivation部分还不为空的时候，并且其第一个元素为终结符号的时候，此时采取Shift Action
         case (starter, intermediate, derivationFirst +: derivationLeft, terminalSymbol) if SyntacticSymbol.isTerminalSymbol(derivationFirst) =>
-          if (actionMap.contains((state, derivationFirst))) {
-            return actionMap
-          }
+//          不注释掉会出现 Exception in thread "main" java.lang.RuntimeException: BinaryOpNode left part error: AssignNode(a,2)
+//          if (actionMap.contains((state, derivationFirst))) {
+//            return actionMap
+//          }
           val newClosure = GotoUtil.goto(closure, derivationFirst)
           val newState = closureIndexMap(newClosure)
           actionMap + ((state, derivationFirst) -> Shift(newState))

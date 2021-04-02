@@ -1,6 +1,6 @@
 package common.ASTNode
 
-class ExecResult(val result:ExpressionNode) {
+class ExecResult(val result: ExpressionNode) {
 
 }
 
