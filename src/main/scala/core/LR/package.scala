@@ -44,12 +44,19 @@ package object LR {
           actionMap + ((state, SyntacticSymbol.$) -> Accept())
         // 当derivation部分还不为空的时候，并且其第一个元素为终结符号的时候，此时采取Shift Action
         case (starter, intermediate, derivationFirst +: derivationLeft, terminalSymbol) if SyntacticSymbol.isTerminalSymbol(derivationFirst) =>
-//          不注释掉会出现 Exception in thread "main" java.lang.RuntimeException: BinaryOpNode left part error: AssignNode(a,2)
-//          if (actionMap.contains((state, derivationFirst))) {
-//            return actionMap
-//          }
+          //          不注释掉会出现 Exception in thread "main" java.lang.RuntimeException: BinaryOpNode left part error: AssignNode(a,2)
+          var isChange = false
+          if (actionMap.contains((state, derivationFirst))) {
+            println(s"action map already has ${(state, derivationFirst)}")
+            println("Previous: " + (state, derivationFirst) -> actionMap((state, derivationFirst)))
+            //            return actionMap
+            isChange = true
+          }
           val newClosure = GotoUtil.goto(closure, derivationFirst)
           val newState = closureIndexMap(newClosure)
+          if (isChange) {
+            println("New: " + (state, derivationFirst) -> Shift(newState))
+          }
           actionMap + ((state, derivationFirst) -> Shift(newState))
         // 当derivation部分为空的时候，此时进行Reduce Action，只有在Action为Reduce的时候才会使用到GotoMap
         case (starter, intermediate, Vector(), terminalSymbol) =>

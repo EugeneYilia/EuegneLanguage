@@ -62,8 +62,20 @@ class parserTest extends AnyFunSuite {
     println(LR.computeClosure(testItem))
   }
 
+  test("computeClosure (STARTER,Vector(), Vector(FUNCTIONS),$)") {
+    val testItem = (STARTER, Vector(), Vector(FUNCTIONS), $)
+    LR.computeClosure(testItem).foreach(println)
+  }
 
+  test("computeClosure") {
+    Grammar.derivationList.foreach { derivation =>
+      println(derivation)
+      val result = LR.computeClosure((derivation._1, Vector(), derivation._2, $))
+      println(result)
 
+      println()
+    }
+  }
 
 
   val resolve: Item => Option[ClosureUtil.MatchResult] = {
