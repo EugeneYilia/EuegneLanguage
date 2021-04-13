@@ -115,7 +115,7 @@ package object LR {
   }
 
   def computeClosure(item: Item): Closure = {
-
+    println(s"item: ${item}")
     // If Input -> (Starter, Vector(), Vector(Functions), $)
     // 1. (Functions, Vector(), Vector(Functions, Function), $)
     //    (Functions, Vector(), Vector(Function), $)
@@ -135,7 +135,10 @@ package object LR {
 
     val originalItemSet = mutable.Set[Item](item)
     val resultItemSet = mutable.Set[Item]()
-    computeAllItems(originalItemSet, resultItemSet).toSet
+    val closure = computeAllItems(originalItemSet, resultItemSet).toSet
+    println(s"closure: ${closure}")
+    println()
+    closure
   }
 
   def computeFirstSet(derivationLeft: Vector[SyntacticSymbol]): Option[Set[SyntacticSymbol]] = {
