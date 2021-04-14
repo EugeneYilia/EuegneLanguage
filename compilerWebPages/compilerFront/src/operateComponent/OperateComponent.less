@@ -1,0 +1,25 @@
+@baseBGColor: orange;
+
+.operateContainer {
+  z-index: 9999;
+  position: absolute;
+  width: 97.4%;
+  height: 85vh;
+  background-color: spin(lighten(@baseBGColor, 42%), 3);
+  color: black;
+  margin-left: 1.2%;
+  top: 9%;
+  text-align: right;
+}
+
+.colorChange(light; @color) {
+  color: lighten(@color, 42%)
+}
+
+.colorChange(dark,@color) {
+  color: darken(@color, 42%)
+}
+
+.colorChange(@_,@color) {
+  color: @color
+}
