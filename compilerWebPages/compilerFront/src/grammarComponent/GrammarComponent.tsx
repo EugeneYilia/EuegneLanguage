@@ -20,8 +20,11 @@ class GrammarComponent extends React.Component {
     // 组件挂载后 去获取当前所使用的文法
     componentDidMount() {
         axios({
-            method: 'get'
+            method: 'get',
+            url: 'http://localhost:8989/index',
+            withCredentials: true,
         }).then((response: any) => {
+            console.log(response.data)
             //TODO
         })
     }
@@ -60,9 +63,11 @@ class GrammarComponent extends React.Component {
         return (<>
 
             <>
-                <Modal visible={this.state.isChangePartVisible} onOk={this.changeGrammar} onCancel={this.closeChangePart} okText={'确认更换'} cancelText={'取消更换'}>
+                <Modal visible={this.state.isChangePartVisible} onOk={this.changeGrammar}
+                       onCancel={this.closeChangePart} okText={'确认更换'} cancelText={'取消更换'}>
                     <div>新文法</div>
-                    <TextArea style={{width: "100%", height: "40vh"}} onChange={(e) => this.newGrammarContentChange(e)}/>
+                    <TextArea style={{width: "100%", height: "40vh"}}
+                              onChange={(e) => this.newGrammarContentChange(e)}/>
                 </Modal>
 
 
