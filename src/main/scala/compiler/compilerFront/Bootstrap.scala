@@ -73,7 +73,7 @@ object Bootstrap extends App {
 
   println("*** Eugene Program Execute Result ***")
   val initEnv = Env(None, rootNode.asInstanceOf[FunctionsNode].convertToMap)
-  initEnv.get("main") match {
+  initEnv.get("入口") match {
     case Some(node) =>
       node.asInstanceOf[FunctionNode].exec(initEnv)
     case None =>

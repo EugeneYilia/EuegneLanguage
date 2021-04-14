@@ -27,6 +27,7 @@ final class LRParser(val analysisTable: AnalysisTable) {
 
   @tailrec
   def parse(stateStack: Vector[State], nodeStack: Vector[Node], tokensLeft: Vector[Token]): ParseResult = {
+    println(s"nodeStack: $nodeStack")
     val currentToken = tokensLeft.head
     val currentTokenSymbol = currentToken._1
 

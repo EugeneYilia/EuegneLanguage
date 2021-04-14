@@ -8,16 +8,16 @@ object Matcher {
 
   def matchKeyword(sourceCharList: List[Char]): MatchResult = sourceCharList match {
     case 'i' :: 'n' :: 't' :: restCharList => Some(((INT_KEYWORD, null), restCharList))
-    case 'f' :: 'n' :: restCharList => Some(((FUNCTION_KEYWORD, null), restCharList))
-    case 'i' :: 'f' :: restCharList => Some(((IF_KEYWORD, null), restCharList))
+    case '函' :: '数' :: restCharList => Some(((FUNCTION_KEYWORD, null), restCharList))
+    case '如' :: '果' :: restCharList => Some(((IF_KEYWORD, null), restCharList))
     case 'e' :: 'l' :: 'i' :: 'f' :: restCharList => Some(((ELIF_KEYWORD, null), restCharList))
-    case 'e' :: 'l' :: 's' :: 'e' :: restCharList => Some(((ELSE_KEYWORD, null), restCharList))
+    case '否' :: '则' :: restCharList => Some(((ELSE_KEYWORD, null), restCharList))
     case 'f' :: 'o' :: 'r' :: restCharList => Some(((FOR_KEYWORD, null), restCharList))
     case _ => None
   }
 
   def matchBuiltInFunction(sourceCharList: List[Char]): MatchResult = sourceCharList match {
-    case 'p' :: 'r' :: 'i' :: 'n' :: 't' :: 'l' :: 'n' :: restCharList => Some(((PRINTLN, null), restCharList))
+    case '打' :: '印' :: restCharList => Some(((PRINTLN, null), restCharList))
     case _ => None
   }
 
@@ -77,11 +77,15 @@ object Matcher {
   }
 
   private def matchIdHead(sourceChar: Char): Boolean = {
-    (sourceChar >= 'A' && sourceChar <= 'Z') || (sourceChar >= 'a' && sourceChar <= 'z') || sourceChar == '_'
+    (sourceChar >= 'A' && sourceChar <= 'Z') || (sourceChar >= 'a' && sourceChar <= 'z') || sourceChar == '_' || matchChinese(sourceChar)
+  }
+
+  private def matchChinese(sourceChar: Char): Boolean = {
+    sourceChar >= 0x4E00 && sourceChar <= 0x29FA5
   }
 
   private def matchIdContent(sourceChar: Char): Boolean = {
-    (sourceChar >= 'A' && sourceChar <= 'Z') || (sourceChar >= 'a' && sourceChar <= 'z') || (sourceChar >= '0' && sourceChar <= '9') || sourceChar == '_'
+    (sourceChar >= 'A' && sourceChar <= 'Z') || (sourceChar >= 'a' && sourceChar <= 'z') || (sourceChar >= '0' && sourceChar <= '9') || sourceChar == '_' || matchChinese(sourceChar)
   }
 
 

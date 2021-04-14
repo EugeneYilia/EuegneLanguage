@@ -19,8 +19,11 @@ object Lexer {
     val purifiedSourceCharList = skipWhiteSpace(sourceCharList)
     if (purifiedSourceCharList.isEmpty) resultBuffer.toList
     else Matcher(purifiedSourceCharList) match {
-      case Some((token,restCharList)) => convertToToken(resultBuffer.addOne(token),restCharList)
-      case None => throw new RuntimeException(s"Lexer part error: ${purifiedSourceCharList.mkString}")
+      case Some((token,restCharList)) =>
+        println(token)
+        convertToToken(resultBuffer.addOne(token),restCharList)
+      case None =>
+        throw new RuntimeException(s"Lexer part error: ${purifiedSourceCharList.mkString}")
     }
   }
 
