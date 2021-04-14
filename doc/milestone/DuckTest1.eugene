@@ -1,0 +1,30 @@
+fn testDuck(){
+    aDuckNumber = 3;
+    bDuckNumber = 4 * 2;
+    cDuckNumber = 0;
+    println(bDuckNumber);
+
+    aAndBSumNumber = aDuckNumber + bDuckNumber;
+
+    aHasDuck = 1;
+    bHasDuck = 1;
+    cHasDuck = 0;
+
+    if(aHasDuck) {
+        println(aDuckNumber);
+    } else {
+        println(0);
+    };
+
+    if(bHasDuck) {
+        println(bDuckNumber);
+    } else {
+        println(0);
+    };
+}
+
+fn main(){
+   println(1010101010);
+   testDuck();
+   println(1010101010);
+}
