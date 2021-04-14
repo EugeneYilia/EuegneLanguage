@@ -6,3 +6,9 @@ project/*
 reference/LR1-compiler/.idea/*
 reference/LR1-compiler/project/*
 reference/LR1-compiler/target/*
+
+compilerWebPages/compilerFront/.idea/*
+compilerWebPages/compilerFront/node_modules/*
+compilerWebPages/compilerFront/build/*
+compilerWebPages/compilerFront/coverage/*
+compilerWebPages/compilerFront/.DS_Store
