@@ -1,8 +1,8 @@
 package random
 
-import common.{Closure, Grammar, Item, SyntacticSymbol}
-import common.SyntacticSymbol._
-import core.LR
+import compiler.compilerFront.common.{Closure, Grammar, Item, SyntacticSymbol}
+import compiler.compilerFront.common.SyntacticSymbol._
+import compiler.compilerFront.core.LR
 import org.scalatest.funsuite.AnyFunSuite
 
 import scala.collection.immutable.HashSet
