@@ -1,7 +1,7 @@
 package server.controller
 
 import com.alibaba.fastjson.JSONObject
-import compiler.compilerFront.common.Grammar
+import compiler.compilerFront.common.{Derivation, DerivationList, Grammar}
 import org.springframework.web.bind.annotation.{RequestMapping, RequestMethod, RestController}
 
 // GET 获取
@@ -15,7 +15,25 @@ class GrammarController {
   @RequestMapping(value = Array("api/grammar"), method = Array(RequestMethod.GET))
   def getGrammar: JSONObject = {
     val jsonObject = new JSONObject
-    jsonObject.put("data", Grammar.getUsedDerivationList)
+    jsonObject.put("data", formatGrammar(Grammar.getUsedDerivationList))
     jsonObject
+  }
+
+  private def formatGrammar(grammarList: DerivationList): String = {
+    val stringBuilder = new StringBuilder
+    grammarList.foreach(element => {
+      stringBuilder append element._1
+      stringBuilder append "  ->  "
+      stringBuilder append "["
+      for (index <- element._2.indices) {
+        stringBuilder append element._2(index)
+        if (index != (element._2.size - 1)) {
+          stringBuilder append ','
+        }
+      }
+      stringBuilder append "]"
+      stringBuilder append '\n'
+    })
+    stringBuilder.toString
   }
 }

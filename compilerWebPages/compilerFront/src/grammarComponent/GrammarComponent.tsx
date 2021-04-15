@@ -3,6 +3,7 @@ import axios from "axios";
 import {Button, Modal, Space} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {connect} from "react-redux";
+import {changeGrammar} from "../redux/Action";
 
 class GrammarComponent extends React.Component {
 
@@ -21,11 +22,18 @@ class GrammarComponent extends React.Component {
     componentDidMount() {
         axios({
             method: 'get',
-            url: 'http://localhost:8989/index',
+            url: 'http://localhost:8989/api/grammar',
             withCredentials: true,
         }).then((response: any) => {
-            console.log(response.data)
-            //TODO
+            let responseData = response.data
+            console.log(responseData)
+            // @ts-ignore
+            this.props.dispatchChangeGrammar({
+                type: changeGrammar,
+                payload: {
+                    grammar: responseData.data
+                }
+            })
         })
     }
 
@@ -52,7 +60,7 @@ class GrammarComponent extends React.Component {
     changeGrammar = () => {
         if (this.state.newGrammarContent !== '') {
             axios({
-                method: 'get'
+                method: 'put'
             }).then((response: any) => {
                 //TODO
             })
@@ -66,14 +74,14 @@ class GrammarComponent extends React.Component {
                 <Modal visible={this.state.isChangePartVisible} onOk={this.changeGrammar}
                        onCancel={this.closeChangePart} okText={'确认更换'} cancelText={'取消更换'}>
                     <div>新文法</div>
-                    <TextArea style={{width: "100%", height: "40vh"}}
+                    <TextArea style={{width: "100%", height: "40vh"}} wrap="off"
                               onChange={(e) => this.newGrammarContentChange(e)}/>
                 </Modal>
 
 
                 <div>当前文法</div>
                 {/*@ts-ignore*/}
-                <TextArea value={this.props.grammar} style={{width: "20%", height: "40vh"}}/>
+                <TextArea value={this.props.grammar} style={{width: "37%", height: "45vh"}} wrap="off"/>
                 <br/>
                 <Button onClick={this.showChangePart}>文法替换</Button>
             </>
