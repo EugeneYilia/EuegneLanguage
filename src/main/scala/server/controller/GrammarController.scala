@@ -1,0 +1,21 @@
+package server.controller
+
+import com.alibaba.fastjson.JSONObject
+import compiler.compilerFront.common.Grammar
+import org.springframework.web.bind.annotation.{RequestMapping, RequestMethod, RestController}
+
+// GET 获取
+// POST 创建
+// PUT 修改
+// DELETE 删除
+// OPTIONS 查看支持的REST Method
+
+@RestController
+class GrammarController {
+  @RequestMapping(value = Array("api/grammar"), method = Array(RequestMethod.GET))
+  def getGrammar: JSONObject = {
+    val jsonObject = new JSONObject
+    jsonObject.put("data", Grammar.getUsedDerivationList)
+    jsonObject
+  }
+}
