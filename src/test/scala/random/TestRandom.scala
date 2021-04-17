@@ -181,6 +181,12 @@ class TestRandom extends AnyFunSuite {
     println(result)
   }
 
+  test("test trim") {
+    val x = "  Fucking lies  "
+    println(x)
+    println(x.trim)
+  }
+
   class TestX {
     def test(): Int = ???
   }

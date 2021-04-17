@@ -1,6 +1,7 @@
 package compiler.compilerFront.utils
 
 import compiler.compilerFront.common.DerivationList
+import compiler.compilerFront.common.SyntacticSymbol.SyntacticSymbol
 
 object GrammarUtil {
   def formatGrammar(grammarList: DerivationList): String = {
@@ -21,7 +22,24 @@ object GrammarUtil {
     stringBuilder.toString
   }
 
-  def transformGrammar(crudeGrammar:String):DerivationList = {
+  def transformGrammar(crudeGrammar: String): DerivationList = {
+    val derivationList = List()
 
+
+    val grammarArray = crudeGrammar.split("\n")
+    grammarArray.foreach(grammar => {
+      val grammarParts = grammar.split("->")
+      val nonTerminalSymbol = grammarParts(0).trim
+      val production = grammarParts(1).trim.drop(1).dropRight(1)
+      val productionSymbol = production.split(",")
+
+      val tempSymbolVector = Vector[SyntacticSymbol]()
+      productionSymbol.foreach(crudeSymbol => {
+        val symbol = crudeSymbol.trim
+
+      })
+    })
+
+    derivationList
   }
 }
