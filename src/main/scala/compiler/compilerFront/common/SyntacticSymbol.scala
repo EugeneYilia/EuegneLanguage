@@ -1,5 +1,7 @@
 package compiler.compilerFront.common
 
+import scala.collection.mutable
+
 object SyntacticSymbol extends Enumeration {
   type SyntacticSymbol = Value
 
@@ -33,6 +35,14 @@ object SyntacticSymbol extends Enumeration {
     STARTER, FUNCTIONS, FUNCTION, STATEMENTS, STATEMENT, EXPRESSION, BLOCK,
     S, A, B, C, D, E, F, M, N, T
   )
+
+  lazy val syntacticSymbolMap = {
+    val symbolMap = mutable.Map[String,SyntacticSymbol]()
+    SyntacticSymbol.values.foreach(element=>{
+      val stringValue: String = element.toString
+      symbolMap[stringValue] = element
+    })
+  }
 
   def isTerminalSymbol(syntacticSymbol: SyntacticSymbol): Boolean = terminalSymbolSet.contains(syntacticSymbol)
 
