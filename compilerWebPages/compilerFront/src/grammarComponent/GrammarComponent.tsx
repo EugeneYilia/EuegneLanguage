@@ -4,6 +4,7 @@ import {Button, Modal, Space} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {connect} from "react-redux";
 import {changeGrammar} from "../redux/Action";
+import {SERVER_URL} from "../config";
 
 class GrammarComponent extends React.Component {
 
@@ -22,7 +23,7 @@ class GrammarComponent extends React.Component {
     componentDidMount() {
         axios({
             method: 'get',
-            url: 'http://localhost:8989/api/grammar',
+            url: SERVER_URL + '/api/grammar',
             withCredentials: true,
         }).then((response: any) => {
             let responseData = response.data
@@ -60,7 +61,12 @@ class GrammarComponent extends React.Component {
     changeGrammar = () => {
         if (this.state.newGrammarContent !== '') {
             axios({
-                method: 'put'
+                method: 'put',
+                url: SERVER_URL + "api/grammar",
+                withCredentials: true,
+                data: JSON.stringify({
+                    grammar: this.state.newGrammarContent
+                })
             }).then((response: any) => {
                 //TODO
             })

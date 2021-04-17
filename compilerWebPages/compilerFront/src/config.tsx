@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const LOCAL_SERVER_URL = "http://127.0.0.1:9005"
+const LOCAL_SERVER_URL = "http://127.0.0.1:8989"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const FORMAL_SERVER_URL = "http://10.95.129.84:9005"
-export const SERVER_URL = LOCAL_SERVER_URL
+const FORMAL_SERVER_URL = "http://192.168.101.12:8989"
+export const SERVER_URL = FORMAL_SERVER_URL
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const LOCAL_CLIENT_URL = "http://127.0.0.1:3000"
