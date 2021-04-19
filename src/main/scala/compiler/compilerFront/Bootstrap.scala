@@ -42,6 +42,15 @@ object Bootstrap extends App {
   LR.computeClosure(originalItem).foreach(println)
   println()
 
+  println("Closure Vector: ")
+  Grammar.closureVector.foreach(element=>{
+    println("Closure: ")
+    element.foreach(item=>{
+      println(s"Item: ${item}")
+    })
+    println()
+  })
+
   println("Analysis Table: ")
   val initDerivation = Grammar.derivationList.filter(_._1 == SyntacticSymbol.STARTER).map(_._2).head
   val initItem = (SyntacticSymbol.STARTER, Vector[SyntacticSymbol](), initDerivation, SyntacticSymbol.$)
