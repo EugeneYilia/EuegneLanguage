@@ -62,13 +62,24 @@ class GrammarComponent extends React.Component {
         if (this.state.newGrammarContent !== '') {
             axios({
                 method: 'put',
-                url: SERVER_URL + "api/grammar",
+                url: SERVER_URL + "/api/grammar",
                 withCredentials: true,
-                data: JSON.stringify({
+                headers:{
+                  "Content-Type":"application/json"
+                },
+                data:JSON.stringify({
                     grammar: this.state.newGrammarContent
                 })
             }).then((response: any) => {
-                //TODO
+                let responseData = response.data
+                console.log(responseData)
+                // @ts-ignore
+                this.props.dispatchChangeGrammar({
+                    type: changeGrammar,
+                    payload: {
+                        grammar: responseData.data
+                    }
+                })
             })
         }
     }
