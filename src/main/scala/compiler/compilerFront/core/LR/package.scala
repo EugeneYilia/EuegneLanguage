@@ -136,7 +136,8 @@ package object LR {
     val originalItemSet = mutable.Set[Item](item)
     val resultItemSet = mutable.Set[Item]()
     val closure = computeAllItems(originalItemSet, resultItemSet).toSet
-    println(s"closure: ${closure}")
+    println(s"closure: ")
+    closure.foreach(println)
     println()
     closure
   }

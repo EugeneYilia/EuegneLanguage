@@ -10,4 +10,12 @@ class GrammarTest extends AnyFunSuite {
 
 //    SyntacticSymbol.
   }
+
+  test("test symbolMap") {
+    SyntacticSymbol.syntacticSymbolMap.foreach(element=>{
+      println(element._1)
+      println(element._2)
+      println()
+    })
+  }
 }

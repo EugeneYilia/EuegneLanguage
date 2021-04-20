@@ -36,12 +36,14 @@ object SyntacticSymbol extends Enumeration {
     S, A, B, C, D, E, F, M, N, T
   )
 
-  lazy val syntacticSymbolMap = {
+  lazy val syntacticSymbolMap:Map[String,SyntacticSymbol] = {
     val symbolMap = mutable.Map[String,SyntacticSymbol]()
     SyntacticSymbol.values.foreach(element=>{
+
       val stringValue: String = element.toString
-      symbolMap[stringValue] = element
+      symbolMap += (stringValue->element)
     })
+    symbolMap.toMap
   }
 
   def isTerminalSymbol(syntacticSymbol: SyntacticSymbol): Boolean = terminalSymbolSet.contains(syntacticSymbol)
