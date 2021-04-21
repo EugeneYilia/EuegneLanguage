@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import {Button, Modal, Space} from "antd";
+import {Button, Modal, notification, Space} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {connect} from "react-redux";
 import {changeGrammar} from "../redux/Action";
@@ -73,12 +73,20 @@ class GrammarComponent extends React.Component {
             }).then((response: any) => {
                 let responseData = response.data
                 console.log(responseData)
-                // @ts-ignore
-                this.props.dispatchChangeGrammar({
-                    type: changeGrammar,
-                    payload: {
-                        grammar: responseData.data
-                    }
+                if(responseData.data === 'success') {
+                    // @ts-ignore
+                    this.props.dispatchChangeGrammar({
+                        type: changeGrammar,
+                        payload: {
+                            grammar: this.state.newGrammarContent
+                        }
+                    })
+                    notification["success"]({
+                        message: '文法替换成功',
+                    });
+                }
+                this.setState({
+                    isChangePartVisible: false
                 })
             })
         }
