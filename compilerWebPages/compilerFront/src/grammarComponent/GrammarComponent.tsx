@@ -64,16 +64,16 @@ class GrammarComponent extends React.Component {
                 method: 'put',
                 url: SERVER_URL + "/api/grammar",
                 withCredentials: true,
-                headers:{
-                  "Content-Type":"application/json"
+                headers: {
+                    "Content-Type": "application/json"
                 },
-                data:JSON.stringify({
+                data: JSON.stringify({
                     grammar: this.state.newGrammarContent
                 })
             }).then((response: any) => {
                 let responseData = response.data
                 console.log(responseData)
-                if(responseData.data === 'success') {
+                if (responseData.data === 'success') {
                     // @ts-ignore
                     this.props.dispatchChangeGrammar({
                         type: changeGrammar,
@@ -96,19 +96,17 @@ class GrammarComponent extends React.Component {
         return (<>
 
             <>
+                <div style={{paddingLeft:"2%"}}>
+                    <div style={{textAlign:"center",paddingBottom:"2%"}}><Space size={59}><span>当前文法</span><Button type={"primary"} onClick={this.showChangePart}>文法替换</Button></Space></div>
+                    {/*@ts-ignore*/}
+                    <TextArea value={this.props.grammar} style={{width: "100%", height: "45vh"}} wrap="off"/>
+                </div>
                 <Modal visible={this.state.isChangePartVisible} onOk={this.changeGrammar}
                        onCancel={this.closeChangePart} okText={'确认更换'} cancelText={'取消更换'}>
                     <div>新文法</div>
                     <TextArea style={{width: "100%", height: "40vh"}} wrap="off"
                               onChange={(e) => this.newGrammarContentChange(e)}/>
                 </Modal>
-
-
-                <div>当前文法</div>
-                {/*@ts-ignore*/}
-                <TextArea value={this.props.grammar} style={{width: "37%", height: "45vh"}} wrap="off"/>
-                <br/>
-                <Button onClick={this.showChangePart}>文法替换</Button>
             </>
 
         </>);

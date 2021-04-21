@@ -8,6 +8,7 @@ import BackTopComponent from "../backTopComponent/BackTopComponent";
 import AnalysisTableComponent from "../analysisTableComponent/AnalysisTableComponent";
 import GrammarComponent from "../grammarComponent/GrammarComponent";
 import CodeComponent from "../codeComponent/CodeComponent";
+import ParserComponent from "../parserComponent";
 
 const {
     Header, Footer, Content,
@@ -40,9 +41,22 @@ class HomeComponent extends React.Component {
                     <h2 className="header title">Eugene Compiler</h2>
                 </Header>
                 <Content style={homeComponentStyle.content}>
-                    <GrammarComponent/>
-                    <CodeComponent/>
-                    <AnalysisTableComponent/>
+                    <div>
+                        <div style={{display:"inline-block",width:"33%",verticalAlign:"top"}}>
+                            <GrammarComponent/>
+                        </div>
+                        <div style={{display:"inline-block",width:"33%",verticalAlign:"top"}}>
+                            <CodeComponent/>
+                        </div>
+                        <div>
+
+                        </div>
+                    </div>
+                    <div>
+                        <AnalysisTableComponent/>
+                        <ParserComponent/>
+                    </div>
+
                     <BackTopComponent/>
                 </Content>
                 <Footer style={{textAlign: "center", position: 'fixed', height: '70px', bottom: '0px', width: '100%'}}>
@@ -54,9 +68,7 @@ class HomeComponent extends React.Component {
 }
 
 function mapStateToProps(state: any) {
-    return {
-
-    }
+    return {}
 }
 
 export default connect(mapStateToProps)(HomeComponent)
