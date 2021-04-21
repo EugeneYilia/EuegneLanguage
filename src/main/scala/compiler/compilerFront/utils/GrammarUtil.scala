@@ -1,6 +1,6 @@
 package compiler.compilerFront.utils
 
-import compiler.compilerFront.common.{DerivationList, SyntacticSymbol}
+import compiler.compilerFront.common.{Derivation, DerivationList, SyntacticSymbol}
 import compiler.compilerFront.common.SyntacticSymbol.SyntacticSymbol
 
 import scala.collection.mutable.ListBuffer
@@ -25,8 +25,7 @@ object GrammarUtil {
   }
 
   def transformGrammar(crudeGrammar: String): DerivationList = {
-    val derivationListBuffer = ListBuffer()
-
+    val derivationListBuffer = ListBuffer[Derivation]()
 
     val grammarArray = crudeGrammar.split("\n")
     grammarArray.foreach(grammar => {
@@ -40,7 +39,7 @@ object GrammarUtil {
         val symbol = crudeSymbol.trim
         symbolListBuffer += SyntacticSymbol.syntacticSymbolMap(symbol)
       })
-      derivationListBuffer += (nonTerminalSymbol -> symbolListBuffer.toVector)
+      derivationListBuffer += (SyntacticSymbol.syntacticSymbolMap(nonTerminalSymbol) -> symbolListBuffer.toVector)
     })
 
     derivationListBuffer.toList
