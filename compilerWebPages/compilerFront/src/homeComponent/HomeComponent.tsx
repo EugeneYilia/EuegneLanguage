@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import BackTopComponent from "../backTopComponent/BackTopComponent";
 import AnalysisTableComponent from "../analysisTableComponent/AnalysisTableComponent";
 import GrammarComponent from "../grammarComponent/GrammarComponent";
+import CodeComponent from "../codeComponent/CodeComponent";
 
 const {
     Header, Footer, Content,
@@ -40,6 +41,7 @@ class HomeComponent extends React.Component {
                 </Header>
                 <Content style={homeComponentStyle.content}>
                     <GrammarComponent/>
+                    <CodeComponent/>
                     <AnalysisTableComponent/>
                     <BackTopComponent/>
                 </Content>
