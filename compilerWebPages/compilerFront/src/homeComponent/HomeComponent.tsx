@@ -9,6 +9,7 @@ import AnalysisTableComponent from "../analysisTableComponent/AnalysisTableCompo
 import GrammarComponent from "../grammarComponent/GrammarComponent";
 import CodeComponent from "../codeComponent/CodeComponent";
 import ParserComponent from "../parserComponent";
+import ExecResultComponent from "../execResultComponent/ExecResultComponent";
 
 const {
     Header, Footer, Content,
@@ -48,8 +49,8 @@ class HomeComponent extends React.Component {
                         <div style={{display:"inline-block",width:"33%",verticalAlign:"top"}}>
                             <CodeComponent/>
                         </div>
-                        <div>
-
+                        <div style={{display:"inline-block",width:"33%",verticalAlign:"top"}}>
+                            <ExecResultComponent/>
                         </div>
                     </div>
                     <div>
