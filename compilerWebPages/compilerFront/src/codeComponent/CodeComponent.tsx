@@ -61,7 +61,7 @@ class CodeComponent extends React.Component {
     render() {
         return (<>
             <div className={"CodeMirrorWrapper"}>
-                <div style={{textAlign:"center",paddingBottom:"2%"}}><Space size={59}><span>当前代码</span><Button type={"primary"} onClick={this.codeChange}>代码替换</Button></Space></div>
+                <div style={{textAlign:"center",paddingBottom:"2%"}}><Space size={59}><span>当前代码</span><Button type={"primary"} onClick={this.codeChange}>开始执行</Button></Space></div>
                 <CodeMirror
                     value={this.state.testData}
                     options={{

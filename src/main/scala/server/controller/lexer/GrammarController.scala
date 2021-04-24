@@ -1,4 +1,4 @@
-package server.controller
+package server.controller.lexer
 
 import com.alibaba.fastjson.{JSON, JSONObject}
 import compiler.compilerFront.common.Grammar

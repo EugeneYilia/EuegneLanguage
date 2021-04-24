@@ -6,6 +6,7 @@ import compiler.compilerFront.common.SyntacticSymbol.SyntacticSymbol
 import compiler.compilerFront.common._
 import compiler.compilerFront.core.LR
 import compiler.compilerFront.core.LR._
+import compiler.compilerFront.io.CodeReader
 import compiler.compilerFront.lexer.Lexer
 import compiler.compilerFront.parser.lrParser.LRParser
 
@@ -17,13 +18,16 @@ object Bootstrap extends App {
   println(args(0))
   println()
 
-  val file = Source.fromFile(args(0))
-  val fileContent = file.mkString
+  val codeReader = CodeReader
+  println(s"codeReader: ${codeReader.getCodeContent()}")
+  codeReader.readFromFile(args(0))
+
+  val codeContent = codeReader.getCodeContent()
   println(s"fileContent: ")
-  println(fileContent)
+  println(codeContent)
   println()
 
-  val tokens = Lexer(fileContent) :+ (SyntacticSymbol.$, null)
+  val tokens = Lexer(codeContent) :+ (SyntacticSymbol.$, null)
 
   println(s"tokens: ")
   println(tokens.mkString)
