@@ -1,6 +1,5 @@
 package compiler.compilerFront.io
 
-import compiler.compilerFront.Bootstrap.args
 
 import scala.io.Source
 
