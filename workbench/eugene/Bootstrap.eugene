@@ -1,3 +1,4 @@
+a = 2 * 2;
 fn assign() {
     a = 2*2;
     println(a);
