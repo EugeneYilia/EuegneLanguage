@@ -15,7 +15,7 @@ object CodeReader {
     this.codeContent = fileContent
   }
 
-  def getCodeContent(): String = {
+  def getCodeContent: String = {
     this.codeContent
   }
 

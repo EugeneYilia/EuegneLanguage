@@ -9,12 +9,16 @@ import compiler.compilerFront.core.LR._
 import compiler.compilerFront.io.CodeReader
 import compiler.compilerFront.lexer.Lexer
 import compiler.compilerFront.parser.lrParser.LRParser
+import server.cache.ResultCache
 
 object Bootstrap {
 
   def compile(): Option[ExecResult] = {
+
+    ResultCache.clearCache()
+
     val codeReader = CodeReader
-    val codeContent = codeReader.getCodeContent()
+    val codeContent = codeReader.getCodeContent
     println(s"fileContent: ")
     println(codeContent)
     println()
@@ -39,9 +43,9 @@ object Bootstrap {
     println()
 
     println("Closure Vector: ")
-    Grammar.closureVector.foreach(element=>{
+    Grammar.closureVector.foreach(element => {
       println("Closure: ")
-      element.foreach(item=>{
+      element.foreach(item => {
         println(s"Item: ${item}")
       })
       println()
