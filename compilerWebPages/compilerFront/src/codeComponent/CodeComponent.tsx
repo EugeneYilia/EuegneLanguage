@@ -7,11 +7,13 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/erlang-dark.css';
 import 'codemirror/mode/rust/rust'
 import {Button, Space} from "antd";
+import axios from "axios";
+import {SERVER_URL} from "../config";
 
 class CodeComponent extends React.Component {
 
     state = {
-        "testData": "fn assign() {\n" +
+        "codeContent": "fn assign() {\n" +
             "    a = 2*2;\n" +
             "    println(a);\n" +
             "    a = 5;\n" +
@@ -54,16 +56,49 @@ class CodeComponent extends React.Component {
             "}\n"
     }
 
-    codeChange = ()=>{
+    componentDidMount() {
+        axios({
+            method: 'get',
+            url: SERVER_URL + '/api/code',
+            withCredentials: true,
+        }).then((response: any) => {
+            let responseData = response.data
+            console.log(responseData)
+            // @ts-ignore
+            this.props.dispatchChangeGrammar({
+                type: changeGrammar,
+                payload: {
+                    grammar: responseData.data
+                }
+            })
+        })
+    }
 
+    executeCode = () => {
+        axios({
+            method: 'put',
+            url: SERVER_URL + '/api/code',
+            withCredentials: true,
+        }).then((response: any) => {
+            let responseData = response.data
+            console.log(responseData)
+            // @ts-ignore
+            this.props.dispatchChangeGrammar({
+                type: changeGrammar,
+                payload: {
+                    grammar: responseData.data
+                }
+            })
+        })
     }
 
     render() {
         return (<>
             <div className={"CodeMirrorWrapper"}>
-                <div style={{textAlign:"center",paddingBottom:"2%"}}><Space size={59}><span>当前代码</span><Button type={"primary"} onClick={this.codeChange}>开始执行</Button></Space></div>
+                <div style={{textAlign: "center", paddingBottom: "2%"}}><Space size={59}><span>当前代码</span><Button
+                    type={"primary"} onClick={this.executeCode}>开始执行</Button></Space></div>
                 <CodeMirror
-                    value={this.state.testData}
+                    value={this.state.codeContent}
                     options={{
                         mode: 'rust',
                         lineNumbers: true,
@@ -71,6 +106,10 @@ class CodeComponent extends React.Component {
                         direction: "ltr"
                     }}
                     onChange={(editor, data, value) => {
+                        // console.log(value)
+                        this.setState({
+                            "codeContent": value
+                        })
                     }}
                 />
             </div>
