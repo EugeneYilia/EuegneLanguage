@@ -7,3 +7,11 @@ class GrammarData() {
     this.grammar = newGrammar
   }
 }
+
+class CodeData() {
+  var code: String = _
+
+  def setCode(newCode:String):Unit = {
+    this.code = newCode
+  }
+}

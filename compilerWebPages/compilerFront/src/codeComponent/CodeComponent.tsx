@@ -9,51 +9,13 @@ import 'codemirror/mode/rust/rust'
 import {Button, Space} from "antd";
 import axios from "axios";
 import {SERVER_URL} from "../config";
+import {changeCode} from "../redux/Action";
+import {connect} from "react-redux";
 
 class CodeComponent extends React.Component {
 
     state = {
-        "codeContent": "fn assign() {\n" +
-            "    a = 2*2;\n" +
-            "    println(a);\n" +
-            "    a = 5;\n" +
-            "\n" +
-            "    if(a){\n" +
-            "        println(a);\n" +
-            "    }else{\n" +
-            "        println(233);\n" +
-            "    };\n" +
-            "\n" +
-            "    a = 0;\n" +
-            "    b = 4;\n" +
-            "    println(b);\n" +
-            "\n" +
-            "    if(a){\n" +
-            "        println(a);\n" +
-            "    }else{\n" +
-            "        b = 5;\n" +
-            "        println(b);\n" +
-            "        println(233);\n" +
-            "    };\n" +
-            "\n" +
-            "    println(b);\n" +
-            "}\n" +
-            "\n" +
-            "fn plus() {\n" +
-            "    println(3+3);\n" +
-            "}\n" +
-            "\n" +
-            "fn minus() {\n" +
-            "    println(6-100);\n" +
-            "}\n" +
-            "\n" +
-            "fn main() {\n" +
-            "   println(123);\n" +
-            "   assign();\n" +
-            "   plus();\n" +
-            "   minus();\n" +
-            "   println(456);\n" +
-            "}\n"
+        // "codeContent": ""
     }
 
     componentDidMount() {
@@ -65,10 +27,33 @@ class CodeComponent extends React.Component {
             let responseData = response.data
             console.log(responseData)
             // @ts-ignore
-            this.props.dispatchChangeGrammar({
-                type: changeGrammar,
+            this.props.dispatchChangeCode({
+                type: changeCode,
                 payload: {
-                    grammar: responseData.data
+                    code: responseData.data
+                }
+            })
+        })
+    }
+
+    changeCode = (newValue:any)=>{
+        axios({
+            method: 'put',
+            url: SERVER_URL + '/api/code',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: JSON.stringify({
+                code: newValue
+            })
+        }).then((response: any) => {
+            // let responseData = response.data
+            // console.log(responseData)
+            // @ts-ignore
+            this.props.dispatchChangeCode({
+                type: changeCode,
+                payload: {
+                    code: newValue
                 }
             })
         })
@@ -76,15 +61,15 @@ class CodeComponent extends React.Component {
 
     executeCode = () => {
         axios({
-            method: 'put',
-            url: SERVER_URL + '/api/code',
+            method: 'get',
+            url: SERVER_URL + '/api/code/execute',
             withCredentials: true,
         }).then((response: any) => {
             let responseData = response.data
             console.log(responseData)
             // @ts-ignore
             this.props.dispatchChangeGrammar({
-                type: changeGrammar,
+                type: changeCode,
                 payload: {
                     grammar: responseData.data
                 }
@@ -97,8 +82,12 @@ class CodeComponent extends React.Component {
             <div className={"CodeMirrorWrapper"}>
                 <div style={{textAlign: "center", paddingBottom: "2%"}}><Space size={59}><span>当前代码</span><Button
                     type={"primary"} onClick={this.executeCode}>开始执行</Button></Space></div>
+                {/* value相当于是设置了初始值 并不是始终进行着两两绑定 */}
                 <CodeMirror
-                    value={this.state.codeContent}
+                    value={
+                        //@ts-ignore
+                        this.props.codeContent
+                    }
                     options={{
                         mode: 'rust',
                         lineNumbers: true,
@@ -107,9 +96,10 @@ class CodeComponent extends React.Component {
                     }}
                     onChange={(editor, data, value) => {
                         // console.log(value)
-                        this.setState({
-                            "codeContent": value
-                        })
+                        // this.setState({
+                        //     "codeContent": value
+                        // })
+                        this.changeCode(value)
                     }}
                 />
             </div>
@@ -117,4 +107,16 @@ class CodeComponent extends React.Component {
     }
 }
 
-export default CodeComponent
+function mapDispatchToProps(dispatch: any) {
+    return {
+        dispatchChangeCode: (action: any) => dispatch(action),
+    }
+}
+
+function mapStateToProps(state: any) {
+    return {
+        code: state.codeReducer.code
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(CodeComponent)

@@ -7,7 +7,7 @@ object CompilerFrontApp extends App {
   println(args(0))
   println()
   val codeReader = CodeReader
-  println(s"codeReader: ${codeReader.getCodeContent()}")
+  println(s"codeReader: ${codeReader.getCodeContent}")
   codeReader.readFromFile(args(0))
 
   Bootstrap.compile()
