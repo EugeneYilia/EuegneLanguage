@@ -9,15 +9,20 @@ import 'codemirror/mode/rust/rust'
 import {Button, Space} from "antd";
 import axios from "axios";
 import {SERVER_URL} from "../config";
-import {changeCode, changeResult} from "../redux/Action";
+import {changeCode, changeResult, changeToken} from "../redux/Action";
 import {connect} from "react-redux";
+import {store} from "../redux/Store";
+import {Unsubscribe} from "redux";
 
 class CodeComponent extends React.Component {
 
     state = {
-        // "codeContent": ""
+        "initCodeContent": "",
+        "cacheCode": ""
         // contentKey: 0
     }
+
+    unsubscribeCodeContent: Unsubscribe | undefined
 
     componentDidMount() {
         axios({
@@ -26,7 +31,12 @@ class CodeComponent extends React.Component {
             withCredentials: true,
         }).then((response: any) => {
             let responseData = response.data
-            console.log(responseData)
+            // console.log(responseData)
+
+            this.setState({
+                "initCodeContent": responseData.data
+            })
+
             // @ts-ignore
             this.props.dispatchChangeCode({
                 type: changeCode,
@@ -34,7 +44,24 @@ class CodeComponent extends React.Component {
                     code: responseData.data
                 }
             })
+
+            this.unsubscribeCodeContent = store.subscribe(() => {
+                let reducerCode = store.getState().codeReducer.code
+                // console.log(reducerCode)
+                if (reducerCode !== this.state.cacheCode) {
+                    this.setState({
+                        "initCodeContent": reducerCode,
+                        "cacheCode": reducerCode,
+                    })
+                }
+            })
         })
+    }
+
+    componentWillUnmount() {
+        if (this.unsubscribeCodeContent !== undefined) {
+            this.unsubscribeCodeContent()
+        }
     }
 
     changeCode = (newValue: any) => {
@@ -48,13 +75,29 @@ class CodeComponent extends React.Component {
                 code: newValue
             })
         }).then((response: any) => {
-            // let responseData = response.data
+            let responseData = response.data
             // console.log(responseData)
+
+            this.setState({
+                "cacheCode": newValue
+            })
+
             // @ts-ignore
             this.props.dispatchChangeCode({
                 type: changeCode,
                 payload: {
                     code: newValue
+                }
+            })
+
+            let tokens = JSON.parse(responseData.tokens)
+            console.log(tokens)
+
+            // @ts-ignore
+            this.props.dispatchChangeToken({
+                "type": changeToken,
+                payload: {
+                    tokens: tokens
                 }
             })
         })
@@ -85,15 +128,20 @@ class CodeComponent extends React.Component {
                     type={"primary"} onClick={this.executeCode}>开始执行</Button></Space></div>
                 {/* value相当于是设置了初始值 并不是始终进行着两两绑定 */}
                 <CodeMirror
+                    // key={this.state.initCodeContent}
                     value={
-                        //@ts-ignore
-                        this.props.code
+                        // @ts-ignore
+                        // this.props.code
+
+                        this.state.initCodeContent
                     }
                     options={{
                         mode: 'rust',
                         lineNumbers: true,
                         theme: 'erlang-dark',
-                        // direction: "ltr"
+                        matchBrackets: true,
+                        // direction: "ltr",
+                        // value: this.state.initCodeContent
                     }}
                     onChange={(editor, data, value) => {
                         // console.log(value)
@@ -112,6 +160,8 @@ function mapDispatchToProps(dispatch: any) {
     return {
         dispatchChangeCode: (action: any) => dispatch(action),
         dispatchChangeResult: (action: any) => dispatch(action),
+        dispatchChangeToken: (action: any) => dispatch(action),
+
     }
 }
 

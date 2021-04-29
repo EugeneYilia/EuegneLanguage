@@ -10,6 +10,7 @@ import GrammarComponent from "../grammarComponent/GrammarComponent";
 import CodeComponent from "../codeComponent/CodeComponent";
 import ParserComponent from "../parserComponent";
 import ExecResultComponent from "../execResultComponent/ExecResultComponent";
+import LexerComponent from "../lexerComponent/LexerComponent";
 
 const {
     Header, Footer, Content,
@@ -43,15 +44,18 @@ class HomeComponent extends React.Component {
                 </Header>
                 <Content style={homeComponentStyle.content}>
                     <div>
-                        <div style={{display:"inline-block",width:"33%",verticalAlign:"top"}}>
+                        <div style={{display: "inline-block", width: "33%", verticalAlign: "top"}}>
                             <GrammarComponent/>
                         </div>
-                        <div style={{display:"inline-block",width:"33%",verticalAlign:"top"}}>
+                        <div style={{display: "inline-block", width: "33%", verticalAlign: "top"}}>
                             <CodeComponent/>
                         </div>
-                        <div style={{display:"inline-block",width:"33%",verticalAlign:"top"}}>
+                        <div style={{display: "inline-block", width: "33%", verticalAlign: "top"}}>
                             <ExecResultComponent/>
                         </div>
+                    </div>
+                    <div style={{width: "100%"}}>
+                        <LexerComponent/>
                     </div>
                     <div>
                         <AnalysisTableComponent/>
