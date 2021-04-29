@@ -1,4 +1,4 @@
-package server.cache
+package compiler.compilerFront.io
 
 object ResultCache {
   private val result: StringBuilder = new StringBuilder

@@ -1,5 +1,6 @@
 package compiler.compilerFront
 
+import compiler.compilerFront.init.InitCompilerFront.initCompilerFront
 import compiler.compilerFront.io.CodeReader
 
 object CompilerFrontApp extends App {
@@ -9,6 +10,8 @@ object CompilerFrontApp extends App {
   val codeReader = CodeReader
   println(s"codeReader: ${codeReader.getCodeContent}")
   codeReader.readFromFile(args(0))
+
+  initCompilerFront()
 
   Bootstrap.compile()
 }

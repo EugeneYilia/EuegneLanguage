@@ -1,7 +1,8 @@
 package compiler.compilerFront.common.ASTNode.terminalNode
 
 import compiler.compilerFront.common.ASTNode.{Env, ExecResult, ExpressionNode}
-import server.cache.ResultCache
+import compiler.compilerFront.io.ResultCache
+
 
 case class PrintlnNode(value: ExpressionNode) extends ExpressionNode {
   override def exec(env: Env): Option[ExecResult] = {
@@ -10,7 +11,7 @@ case class PrintlnNode(value: ExpressionNode) extends ExpressionNode {
       case Some(execResult: ExecResult) =>
         val resultString = execResult.result.toString
         println(resultString)
-        ResultCache.appendResultContent(resultString)
+        ResultCache.appendResultContent(resultString + "\n")
     }
     None
   }
