@@ -9,13 +9,14 @@ import 'codemirror/mode/rust/rust'
 import {Button, Space} from "antd";
 import axios from "axios";
 import {SERVER_URL} from "../config";
-import {changeCode} from "../redux/Action";
+import {changeCode, changeResult} from "../redux/Action";
 import {connect} from "react-redux";
 
 class CodeComponent extends React.Component {
 
     state = {
         // "codeContent": ""
+        // contentKey: 0
     }
 
     componentDidMount() {
@@ -36,7 +37,7 @@ class CodeComponent extends React.Component {
         })
     }
 
-    changeCode = (newValue:any)=>{
+    changeCode = (newValue: any) => {
         axios({
             method: 'put',
             url: SERVER_URL + '/api/code',
@@ -68,10 +69,10 @@ class CodeComponent extends React.Component {
             let responseData = response.data
             console.log(responseData)
             // @ts-ignore
-            this.props.dispatchChangeGrammar({
-                type: changeCode,
+            this.props.dispatchChangeResult({
+                type: changeResult,
                 payload: {
-                    grammar: responseData.data
+                    result: responseData.data
                 }
             })
         })
@@ -86,13 +87,13 @@ class CodeComponent extends React.Component {
                 <CodeMirror
                     value={
                         //@ts-ignore
-                        this.props.codeContent
+                        this.props.code
                     }
                     options={{
                         mode: 'rust',
                         lineNumbers: true,
                         theme: 'erlang-dark',
-                        direction: "ltr"
+                        // direction: "ltr"
                     }}
                     onChange={(editor, data, value) => {
                         // console.log(value)
@@ -110,6 +111,7 @@ class CodeComponent extends React.Component {
 function mapDispatchToProps(dispatch: any) {
     return {
         dispatchChangeCode: (action: any) => dispatch(action),
+        dispatchChangeResult: (action: any) => dispatch(action),
     }
 }
 
@@ -119,4 +121,4 @@ function mapStateToProps(state: any) {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(CodeComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(CodeComponent)
