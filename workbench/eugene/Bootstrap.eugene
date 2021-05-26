@@ -1,6 +1,6 @@
 
 fn assign() {
-    a = 2*2;
+    a = 2*2+2;
     println(a);
     a = 5;
 
